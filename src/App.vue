@@ -1,15 +1,31 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HomePage />
+
+  <header>
+    <Header />
+  </header>
+
+  <main>
+    <div class="container">
+      <router-view />
+    </div>
+  </main>
+
+  <footer>
+    <Footer />
+  </footer>
+
 </template>
 
 <script>
-import HomePage from './components/HomePage.vue'
+
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 export default {
   name: 'App',
   components: {
-    HomePage,
+    Header,
+    Footer,
   }
 }
 </script>
