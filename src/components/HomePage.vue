@@ -11,13 +11,15 @@
     </div>
 
     <div class="row">
-      <div v-for="product in products" :key="product" class="col-sm-4 col-xs-12 text-center p-4 p-sm-2 p-lg-5">
+      <div v-for="product in products" :product="product" :key="product.id" class="col-sm-4 col-xs-12 text-center p-4 p-sm-2 p-lg-5">
         <div class="card no-border">
           <img :src="getImgUrl(product.id)" v-bind:alt="product.name" class="card-img-top">
           <div class="card-body">
-            <p class="card-text">{{ product.producer }} {{ product.name }}</p>
-            <h5 class="card-title font-weight-bold">{{ product.price }}</h5>
-            <a href="#" class="btn btn-success rounded">To cart</a>
+            <router-link class="card-text" :to="{ name: 'productDetail' , params: {id: product.id}}">
+              {{ product.producer }} {{ product.name }}
+            </router-link>
+            <h5 class="card-title font-weight-bold">{{ product.price }} zł</h5>
+            <button class="btn btn-success rounded">Add to cart</button>
           </div>
         </div>
       </div>
@@ -39,10 +41,11 @@ export default {
   },
   data () {
     return {
-      products,
+      products: products,
     }
   },
 };
+
 </script>
 
 <style scoped>

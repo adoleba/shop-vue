@@ -3,6 +3,7 @@ import HomePage from "../components/HomePage"
 import About from "../components/About";
 import Contact from "../components/Contact";
 import Cart from "../components/Cart";
+import ProductDetail from "../components/ProductDetail";
 
 const routes = [
   {
@@ -21,7 +22,12 @@ const routes = [
     path: "/cart",
     name: "cart",
     component: Cart,
-  },
+  }, {
+    path: "/products/:id",
+    name: "productDetail",
+    component: ProductDetail,
+    props: true,
+ },
 ];
 
 const router = createRouter({
