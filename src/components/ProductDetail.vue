@@ -52,7 +52,6 @@
 
 import products from "../data/products";
 
-debugger; // eslint-disable-line no-debugger
 export default {
   name: "ProductDetail",
   data() {

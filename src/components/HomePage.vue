@@ -19,7 +19,7 @@
               {{ product.producer }} {{ product.name }}
             </router-link>
             <h5 class="card-title font-weight-bold">{{ product.price }} zł</h5>
-            <button class="btn btn-success rounded">Add to cart</button>
+            <button class="btn btn-success rounded" v-on:click="addToCart(product)">Add to cart</button>
           </div>
         </div>
       </div>
@@ -31,19 +31,24 @@
 
 <script>
 import products from "../data/products";
+import { Store } from "../store/store";
 
 export default {
   name: 'HomePage',
+  data () {
+    return {
+      products,
+    };
+  },
   methods: {
     getImgUrl(id) {
       return require('../data/images/'+id+'.png')
-    }
+    },
+    addToCart(product){
+      Store.addToCart(product)
+    },
   },
-  data () {
-    return {
-      products: products,
-    }
-  },
+
 };
 
 </script>
