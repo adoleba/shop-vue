@@ -11,11 +11,17 @@
         <div class="col-2 font-weight-bold">Value</div>
       </div>
 
-      <div class="row pb-5" v-for="product in cart.cart" :key="product">
+      <div class="row pb-5" v-for="product in cart.cart" :key="product.details.id">
         <div class="col-2 align-self-center"><img :src="getImgUrl(product.details.id)" v-bind:alt="product.name" /></div>
         <div class="col-3 align-self-center">{{ product.details.producer }} {{ product.details.name }}</div>
         <div class="col-2 align-self-center">{{ product.details.price }} zł</div>
-        <div class="col-2 align-self-center">{{ product.quantity }}</div>
+
+        <div class="col-2 align-self-center">
+          <i class="bi-dash" v-on:click="decreaseQuantity(product)" style="cursor: pointer"></i>
+          <span class="border p-2 rounded">{{ product.quantity }}</span>
+          <i class="bi-plus" v-on:click="increaseQuantity(product)" style="cursor: pointer"></i>
+        </div>
+
         <div class="col-2 align-self-center">{{ product.details.price * product.quantity }} zł</div>
         <div class="col-1 align-self-center">
           <i class="bi-trash" v-on:click="removeFromCart(product.details.id)" style="cursor: pointer" title="Remove from cart"></i>
@@ -72,6 +78,12 @@ export default {
     removeFromCart(id){
       Store.removeFromCart(id)
     },
+    increaseQuantity(product) {
+      Store.increaseQuantity(product)
+    },
+    decreaseQuantity(product) {
+      Store.decreaseQuantity(product)
+    }
   },
   computed: {
     totalCost() {
