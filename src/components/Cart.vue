@@ -1,6 +1,6 @@
 <template>
   <div class="container py-5">
-    <div v-if="cart.cart.length >1 ">
+    <div v-if="cart.cart.length>=1 ">
       <h3>Your cart</h3>
 
       <div class="row py-5">
@@ -26,7 +26,7 @@
           Total value:
         </div>
         <div class="col-2">
-          Value {{totalCost}}
+          {{totalCost}} zł
         </div>
       </div>
 
@@ -67,6 +67,13 @@ export default {
       return require('../data/images/'+id+'.png')
     },
   },
+  computed: {
+    totalCost() {
+      return Store.state.cart.reduce((accum, product) => {
+            return accum + product.details.price * product.quantity
+        }, 0)
+    }
+  }
 
 }
 </script>
