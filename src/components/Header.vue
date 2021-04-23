@@ -6,13 +6,20 @@
           <router-link class="p-2 text-dark" :to="{ name: 'about' }">About us</router-link>
           <router-link class="p-2 text-dark" :to="{ name: 'contact' }">Contact</router-link>
         </nav>
-        <router-link class="btn btn-success rounded" :to="{ name: 'cart' }">Cart</router-link>
+        <router-link class="btn btn-success rounded" :to="{ name: 'cart' }">Cart ( {{cart.cart.length}} )</router-link>
       </div>
 </template>
 
 <script>
+import {Store} from "../store/store";
+
 export default {
-  name: "Header"
+  name: "Header",
+  data() {
+    return {
+      cart: Store.state
+    }
+  }
 }
 </script>
 
