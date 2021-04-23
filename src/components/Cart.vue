@@ -17,9 +17,9 @@
         <div class="col-2 align-self-center">{{ product.details.price }} zł</div>
 
         <div class="col-2 align-self-center">
-          <i class="bi-dash" v-on:click="decreaseQuantity(product)" style="cursor: pointer"></i>
+          <i class="bi-dash" v-on:click="decreaseQuantity(product.details.id)" style="cursor: pointer"></i>
           <span class="border p-2 rounded">{{ product.quantity }}</span>
-          <i class="bi-plus" v-on:click="increaseQuantity(product)" style="cursor: pointer"></i>
+          <i class="bi-plus" v-on:click="increaseQuantity(product.details.id)" style="cursor: pointer"></i>
         </div>
 
         <div class="col-2 align-self-center">{{ product.details.price * product.quantity }} zł</div>
