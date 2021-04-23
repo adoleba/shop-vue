@@ -5,7 +5,7 @@
 
       <div class="row py-5">
         <div class="col-2 font-weight-bold">Product photo</div>
-        <div class="col-4 font-weight-bold">Product name</div>
+        <div class="col-3 font-weight-bold">Product name</div>
         <div class="col-2 font-weight-bold">Unit Price</div>
         <div class="col-2 font-weight-bold">Quantity</div>
         <div class="col-2 font-weight-bold">Value</div>
@@ -13,19 +13,22 @@
 
       <div class="row pb-5" v-for="product in cart.cart" :key="product">
         <div class="col-2 align-self-center"><img :src="getImgUrl(product.details.id)" v-bind:alt="product.name" /></div>
-        <div class="col-4 align-self-center">{{ product.details.producer }} {{ product.details.name }}</div>
+        <div class="col-3 align-self-center">{{ product.details.producer }} {{ product.details.name }}</div>
         <div class="col-2 align-self-center">{{ product.details.price }} zł</div>
         <div class="col-2 align-self-center">{{ product.quantity }}</div>
         <div class="col-2 align-self-center">{{ product.details.price * product.quantity }} zł</div>
+        <div class="col-1 align-self-center">
+          <i class="bi-trash" v-on:click="removeFromCart(product.details.id)" style="cursor: pointer" title="Remove from cart"></i>
+        </div>
       </div>
 
       <hr>
 
       <div class="row justify-content-end py-5">
-        <div class="col-2  font-weight-bold">
+        <div class="col-3  font-weight-bold">
           Total value:
         </div>
-        <div class="col-2">
+        <div class="col-3">
           {{totalCost}} zł
         </div>
       </div>
@@ -65,6 +68,9 @@ export default {
   methods: {
     getImgUrl(id) {
       return require('../data/images/'+id+'.png')
+    },
+    removeFromCart(id){
+      Store.removeFromCart(id)
     },
   },
   computed: {

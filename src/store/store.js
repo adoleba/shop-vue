@@ -19,4 +19,11 @@ export const Store = {
         }
         console.log(this.state.cart[0].quantity)
     },
+    removeFromCart(id){
+        const locationInCart = this.state.cart.findIndex(p => {
+            return p.details.id === id
+        })
+            this.state.cart.splice(locationInCart, 1)
+        console.log(locationInCart)
+    }
 }
