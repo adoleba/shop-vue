@@ -6,7 +6,7 @@
           <router-link class="p-2 text-dark" :to="{ name: 'about' }">About us</router-link>
           <router-link class="p-2 text-dark" :to="{ name: 'contact' }">Contact</router-link>
         </nav>
-        <router-link class="btn btn-success rounded" :to="{ name: 'cart' }"><i class="bi-cart"></i> Cart ( {{cart.cart.length}} )</router-link>
+        <router-link class="btn btn-success rounded" :to="{ name: 'cart' }"><i class="bi-cart"></i> Cart ( {{totalCartQuantity}} )</router-link>
       </div>
 </template>
 
@@ -15,11 +15,13 @@ import {Store} from "../store/store";
 
 export default {
   name: "Header",
-  data() {
-    return {
-      cart: Store.state
+  computed: {
+    totalCartQuantity() {
+      return Store.state.cart.reduce((accum, product) => {
+            return accum + product.quantity
+        }, 0)
     }
-  }
+  },
 }
 </script>
 
