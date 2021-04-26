@@ -52,9 +52,14 @@
 
 import products from "../data/products";
 import {Store} from "../store/store";
+import {useToast} from "vue-toastification";
 
 export default {
   name: "ProductDetail",
+    setup() {
+    const toast = useToast();
+      return {toast}
+  },
   data() {
     return {
       products: products,
@@ -69,7 +74,9 @@ export default {
     },
     addToCart(product){
       Store.addToCart(product, this.getQuantity())
-      console.log(this.getQuantity())
+      this.toast.success("Product was added to cart", {
+        timeout: 1500,
+      });
     },
   },
   created() {

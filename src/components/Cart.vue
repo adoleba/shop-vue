@@ -11,9 +11,13 @@
         <div class="col-2 font-weight-bold">Value</div>
       </div>
 
-      <div class="row pb-5" v-for="product in cart.cart" :key="product.details.id">
+      <div class="row pb-5" v-for="product in cart.cart" :key="product.details.id" :product="product">
         <div class="col-2 align-self-center"><img :src="getImgUrl(product.details.id)" v-bind:alt="product.name" /></div>
-        <div class="col-3 align-self-center">{{ product.details.producer }} {{ product.details.name }}</div>
+        <div class="col-3 align-self-center">
+          <router-link class="card-text" :to="{ name: 'productDetail' , params: {id: product.details.id}}">
+            {{ product.details.producer }} {{ product.details.name }}
+          </router-link>
+        </div>
         <div class="col-2 align-self-center">{{ product.details.price }} zł</div>
 
         <div class="col-2 align-self-center">
@@ -63,9 +67,14 @@
 
 <script>
 import {Store} from "../store/store";
+import {useToast} from "vue-toastification";
 
 export default {
   name: "Cart",
+  setup() {
+    const toast = useToast();
+      return {toast}
+  },
   data() {
     return {
       cart: Store.state
@@ -77,6 +86,9 @@ export default {
     },
     removeFromCart(id){
       Store.removeFromCart(id)
+      this.toast.error("Product was removed from cart", {
+        timeout: 1500,
+      });
     },
     increaseQuantity(product) {
       Store.increaseQuantity(product)
@@ -91,8 +103,7 @@ export default {
             return accum + product.details.price * product.quantity
         }, 0)
     }
-  }
-
+  },
 }
 </script>
 
