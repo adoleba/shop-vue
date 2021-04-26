@@ -31,10 +31,10 @@
 
         <div class="row pb-5 pt-3">
           <div class="col-3">
-            <input type="number" class="form-control" value="1" max="10" id="quantity"/>
+            <input type="number" class="form-control" value="1" min="1" max="10" id="quantity"/>
           </div>
           <div class="col">
-            <button class="btn btn-success rounded">Add to cart</button>
+            <button class="btn btn-success rounded" v-on:click="addToCart(product)">Add to cart</button>
           </div>
         </div>
 
@@ -51,6 +51,7 @@
 <script>
 
 import products from "../data/products";
+import {Store} from "../store/store";
 
 export default {
   name: "ProductDetail",
@@ -62,7 +63,14 @@ export default {
   methods: {
     getImgUrl(id) {
       return require('../data/images/'+id+'.png')
-    }
+    },
+    getQuantity(){
+      return document.querySelector("input[id=quantity]").value
+    },
+    addToCart(product){
+      Store.addToCart(product, this.getQuantity())
+      console.log(this.getQuantity())
+    },
   },
   created() {
     const ID = Number(this.$route.params.id);

@@ -4,7 +4,7 @@ export const Store = {
     state: reactive({
         cart: [],
     }),
-    addToCart(product) {
+    addToCart(product, addedQuantity=1) {
         const locationInCart = this.state.cart.findIndex(p => {
             return p.details.id === product.id
         })
@@ -12,10 +12,10 @@ export const Store = {
         if (locationInCart === -1) {
             this.state.cart.push({
                 details: product,
-                quantity: 1
+                quantity: addedQuantity
             })
         } else {
-            this.state.cart[locationInCart].quantity++
+            this.state.cart[locationInCart].quantity += +addedQuantity
         }
     },
     removeFromCart(id) {
