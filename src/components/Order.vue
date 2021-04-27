@@ -6,7 +6,7 @@
       <h6 class="font-weight-bold">Shipping data</h6>
     </div>
     <div class="col-5 px-3 offset-1">
-      <h6 class="font-weight-bold">Order summary</h6>
+      <h6 class="font-weight-bold">Delivery method</h6>
     </div>
   </div>
 
@@ -85,11 +85,20 @@
     </div>
 
     <div class="col-5 offset-1">
-      <div class="row border rounded p-3 mb-5">
-        <h6 class="font-weight-bold">Shipping method</h6>
+
+      <div class="border rounded p-3 mb-5">
+        <div class="p-4">
+          <div v-for="carrier in carriers" :key="carrier" class="form-row form-group">
+              <div  class="form-check col-7 pl-3">
+                <input class="form-check-input" type="radio" name="delivery" id="delivery" value="carrier.value">
+                <label class="form-check-label" for="delivery">{{ carrier.name }}</label>
+              </div>
+              <div class="col-5">{{carrier.price}} zł</div>
+          </div>
+        </div>
       </div>
 
-      <div class="row border rounded p-3">
+      <div class="border rounded p-3">
         <h6 class="font-weight-bold">Order summary</h6>
       </div>
 
@@ -101,8 +110,17 @@
 </template>
 
 <script>
+import carriers from "../data/delivery";
+
 export default {
   name: "Order",
+
+  data() {
+    return {
+      carriers: carriers,
+    }
+  },
+
   methods: {
     customerData(){
       const privatePersonData = document.getElementById('privatePersonData')
