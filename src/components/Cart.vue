@@ -48,7 +48,7 @@
         <router-link class="btn btn-outline-secondary" :to="{ name: 'home' }">Continue shopping</router-link>
       </div>
       <div class="col-2">
-        <button class="btn btn-success rounded btn-lg">Checkout</button>
+        <router-link class="btn btn-success rounded btn-lg" :to="{ name: 'order' }">Checkout</router-link>
       </div>
       </div>
     </div>

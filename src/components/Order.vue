@@ -90,7 +90,7 @@
         <div class="p-4">
           <div v-for="carrier in carriers" :key="carrier" class="form-row form-group">
               <div  class="form-check col-7 pl-3">
-                <input class="form-check-input" type="radio" name="delivery" id="delivery" value="carrier.value">
+                <input class="form-check-input" type="radio" name="delivery" id="delivery" v-bind:value='carrier.price' @change="addDeliveryCost">
                 <label class="form-check-label" for="delivery">{{ carrier.name }}</label>
               </div>
               <div class="col-5">{{carrier.price}} zł</div>
@@ -98,19 +98,37 @@
         </div>
       </div>
 
-      <div class="border rounded p-3">
+      <div class="pb-3">
         <h6 class="font-weight-bold">Order summary</h6>
       </div>
 
+      <div class="border rounded p-3">
+        <div class="p-4">
+          <div v-for="product in cart.cart" :key="product.details.id" :product="product" class="form-row form-group">
+              <div  class="col-7">
+                {{ product.details.producer }} {{ product.details.name }}
+              </div>
+              <div class="col-5">{{product.quantity }} szt x {{ product.details.price }} zł</div>
+          </div>
+          <hr>
+          <div class="row pt-3">
+            <div  class="col-7">
+                <span class="font-weight-bold">Total value:</span>
+              </div>
+              <div class="col-5">{{ totalCostWithDelivery }} zł</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-  </div>
+    </div>
 
 </div>
 </template>
 
 <script>
 import carriers from "../data/delivery";
+import {Store} from "../store/store";
 
 export default {
   name: "Order",
@@ -118,6 +136,8 @@ export default {
   data() {
     return {
       carriers: carriers,
+      cart: Store.state,
+      deliveryCost: 0,
     }
   },
 
@@ -134,8 +154,19 @@ export default {
         privatePersonData.style.display = 'none';
         companyData.style.display = 'block';
       }
+    },
+    addDeliveryCost(event) {
+      this.deliveryCost = event.target.value
     }
-  }
+
+  },
+  computed: {
+    totalCostWithDelivery() {
+      return Store.state.cart.reduce((accum, product) => {
+            return accum + product.details.price * product.quantity
+        }, 0) + +this.deliveryCost
+    }
+  },
 }
 </script>
 

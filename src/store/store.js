@@ -8,11 +8,11 @@ export const Store = {
         const locationInCart = this.state.cart.findIndex(p => {
             return p.details.id === product.id
         })
-
+        console.log(addedQuantity)
         if (locationInCart === -1) {
             this.state.cart.push({
                 details: product,
-                quantity: addedQuantity
+                quantity: +addedQuantity
             })
         } else {
             this.state.cart[locationInCart].quantity += +addedQuantity
