@@ -11,8 +11,8 @@
   </div>
 
   <div class="row pb-4">
-    <div class="col-6 border rounded p-3">
-      <div class="p-4">
+    <div class="col-6">
+      <div class="p-5 border rounded">
 
         <div class="form-row form-group">
           <div class="form-check form-check-inline">
@@ -93,7 +93,7 @@
                 <input class="form-check-input" type="radio" name="delivery" id="delivery" v-bind:value='carrier.price' @change="addDeliveryCost">
                 <label class="form-check-label" for="delivery">{{ carrier.name }}</label>
               </div>
-              <div class="col-5">{{carrier.price}} zł</div>
+              <div class="col-5">{{carrier.price.toLocaleString().replace('.', ',')}} zł</div>
           </div>
         </div>
       </div>
@@ -108,21 +108,54 @@
               <div  class="col-7">
                 {{ product.details.producer }} {{ product.details.name }}
               </div>
-              <div class="col-5">{{product.quantity }} szt x {{ product.details.price }} zł</div>
+              <div class="col-5">{{product.quantity }} szt x {{ product.details.price.toLocaleString().replace(',', ' ') }} zł</div>
           </div>
           <hr>
+
+          <div class="row pt-3">
+            <div  class="col-7">Products value: </div>
+              <div class="col-5">{{ totalCost.toLocaleString().replace(',', ' ') }} zł</div>
+          </div>
+
+          <div v-if="deliveryCost !== 0" class="row pt-3">
+            <div  class="col-7">Shipping cost: </div>
+              <div class="col-5">{{ deliveryCost.toLocaleString().replace('.', ',') }} zł</div>
+          </div>
+
           <div class="row pt-3">
             <div  class="col-7">
-                <span class="font-weight-bold">Total value:</span>
+                <span class="font-weight-bolder">Total value:</span>
               </div>
-              <div class="col-5">{{ totalCostWithDelivery }} zł</div>
+              <div class="col-5 font-weight-bold">{{ (totalCost + +deliveryCost).toLocaleString().replace(',', ' ').replace('.', ',') }} zł</div>
           </div>
+        </div>
+
+        <div class="form-group">
+          <div class="row px-3 py-1">
+            <div class="col-1">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="terms">
+              </div>
+            </div>
+            <div class="col-10">Etiam sit amet velit ullamcorper dui finibus ultrices porta at justo</div>
+          </div>
+          <div class="row px-3 py-1">
+            <div class="col-1">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="marketing">
+              </div>
+            </div>
+            <div class="col-10">Suspendisse et magna tempus nisi pretium aliquet in in sapien</div>
+          </div>
+
+          <div class="row px-4 pt-4 justify-content-center">
+              <button class="btn btn-success btn-lg rounded">Confirm and pay</button>
+          </div>
+
         </div>
       </div>
     </div>
-
-    </div>
-
+  </div>
 </div>
 </template>
 
@@ -161,11 +194,11 @@ export default {
 
   },
   computed: {
-    totalCostWithDelivery() {
+    totalCost() {
       return Store.state.cart.reduce((accum, product) => {
             return accum + product.details.price * product.quantity
-        }, 0) + +this.deliveryCost
-    }
+        }, 0)
+    },
   },
 }
 </script>

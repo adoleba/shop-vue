@@ -26,7 +26,7 @@
         </div>
 
         <div class="row pl-3 pt-3">
-          <h3 class="font-weight-bold">{{ product.price }} zł</h3>
+          <h3 class="font-weight-bold">{{ product.price.toLocaleString().replace(',', ' ') }} zł</h3>
         </div>
 
         <div class="row pb-5 pt-3">

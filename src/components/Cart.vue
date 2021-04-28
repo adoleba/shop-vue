@@ -18,7 +18,7 @@
             {{ product.details.producer }} {{ product.details.name }}
           </router-link>
         </div>
-        <div class="col-2 align-self-center">{{ product.details.price }} zł</div>
+        <div class="col-2 align-self-center">{{ product.details.price.toLocaleString().replace(',', ' ') }} zł</div>
 
         <div class="col-2 align-self-center">
           <i class="bi-dash" v-on:click="decreaseQuantity(product.details.id)" style="cursor: pointer"></i>
@@ -26,7 +26,7 @@
           <i class="bi-plus" v-on:click="increaseQuantity(product.details.id)" style="cursor: pointer"></i>
         </div>
 
-        <div class="col-2 align-self-center">{{ product.details.price * product.quantity }} zł</div>
+        <div class="col-2 align-self-center">{{ (product.details.price * product.quantity).toLocaleString().replace(',', ' ') }} zł</div>
         <div class="col-1 align-self-center">
           <i class="bi-trash" v-on:click="removeFromCart(product.details.id)" style="cursor: pointer" title="Remove from cart"></i>
         </div>
@@ -39,7 +39,7 @@
           Total value:
         </div>
         <div class="col-3">
-          {{totalCost}} zł
+          {{totalCost.toLocaleString().replace(',', ' ')}} zł
         </div>
       </div>
 

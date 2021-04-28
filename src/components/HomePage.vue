@@ -18,7 +18,7 @@
             <router-link class="card-text" :to="{ name: 'productDetail' , params: {id: product.id}}">
               {{ product.producer }} {{ product.name }}
             </router-link>
-            <h5 class="card-title font-weight-bold">{{ product.price }} zł</h5>
+            <h5 class="card-title font-weight-bold">{{ product.price.toLocaleString().replace(',', ' ') }} zł</h5>
             <button class="btn btn-success rounded" v-on:click="addToCart(product)">Add to cart</button>
           </div>
         </div>
