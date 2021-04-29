@@ -4,6 +4,8 @@ import About from "../components/About";
 import Contact from "../components/Contact";
 import Cart from "../components/Cart";
 import ProductDetail from "../components/ProductDetail";
+import Order from "../components/Order";
+import OrderConfirm from "../components/OrderConfirm";
 
 const routes = [
   {
@@ -23,6 +25,15 @@ const routes = [
     name: "cart",
     component: Cart,
   }, {
+    path: "/order",
+    name: "order",
+    component: Order,
+  }, {
+    path: "/order/confirm",
+    name: "orderConfirm",
+    component: OrderConfirm,
+  },
+  {
     path: "/products/:id",
     name: "productDetail",
     component: ProductDetail,

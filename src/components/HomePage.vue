@@ -18,8 +18,8 @@
             <router-link class="card-text" :to="{ name: 'productDetail' , params: {id: product.id}}">
               {{ product.producer }} {{ product.name }}
             </router-link>
-            <h5 class="card-title font-weight-bold">{{ product.price }} zł</h5>
-            <button class="btn btn-success rounded">Add to cart</button>
+            <h5 class="card-title font-weight-bold">{{ product.price.toLocaleString().replace(',', ' ') }} zł</h5>
+            <button class="btn btn-success rounded" v-on:click="addToCart(product)">Add to cart</button>
           </div>
         </div>
       </div>
@@ -31,19 +31,32 @@
 
 <script>
 import products from "../data/products";
+import { Store } from "../store/store";
+import { useToast } from "vue-toastification";
 
 export default {
   name: 'HomePage',
-  methods: {
-    getImgUrl(id) {
-      return require('../data/images/'+id+'.png')
-    }
+  setup() {
+    const toast = useToast();
+      return {toast}
   },
   data () {
     return {
-      products: products,
-    }
+      products,
+    };
   },
+  methods: {
+    getImgUrl(id) {
+      return require('../data/images/'+id+'.png')
+    },
+    addToCart(product){
+      Store.addToCart(product)
+      this.toast.success("Product was added to cart", {
+        timeout: 1500,
+      });
+    },
+  },
+
 };
 
 </script>

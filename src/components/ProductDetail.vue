@@ -26,15 +26,16 @@
         </div>
 
         <div class="row pl-3 pt-3">
-          <h3 class="font-weight-bold">{{ product.price }} zł</h3>
+          <h3 class="font-weight-bold">{{ product.price.toLocaleString().replace(',', ' ') }} zł</h3>
         </div>
 
         <div class="row pb-5 pt-3">
-          <div class="col-3">
-            <input type="number" class="form-control" value="1" max="10" id="quantity"/>
+          <div class="col-6">
+            <input type="number" class="col-form-label" value="1" min="1" max="10" id="quantity"/>
           </div>
           <div class="col">
-            <button class="btn btn-success rounded">Add to cart</button>
+            <button class="btn btn-success rounded" v-on:click="addToCart(product)">Add to cart</button>
+
           </div>
         </div>
 
@@ -51,10 +52,15 @@
 <script>
 
 import products from "../data/products";
+import {Store} from "../store/store";
+import {useToast} from "vue-toastification";
 
-debugger; // eslint-disable-line no-debugger
 export default {
   name: "ProductDetail",
+    setup() {
+    const toast = useToast();
+      return {toast}
+  },
   data() {
     return {
       products: products,
@@ -63,7 +69,16 @@ export default {
   methods: {
     getImgUrl(id) {
       return require('../data/images/'+id+'.png')
-    }
+    },
+    getQuantity(){
+      return document.querySelector("input[id=quantity]").value
+    },
+    addToCart(product){
+      Store.addToCart(product, this.getQuantity())
+      this.toast.success("Product was added to cart", {
+        timeout: 1500,
+      });
+    },
   },
   created() {
     const ID = Number(this.$route.params.id);
