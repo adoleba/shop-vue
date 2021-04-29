@@ -12,12 +12,12 @@
 
           <div class="row p-4">
             <div class="col-4">To pay: </div>
-            <div class="col-8"><span class="font-weight-bold">Cost</span></div>
+            <div class="col-8"><span class="font-weight-bold">{{ (totalCost).toLocaleString().replace(',', ' ').replace('.', ',') }} zł</span></div>
           </div>
 
           <div class="row px-4">
             <div class="col-4">Delivery: </div>
-            <div class="col-8">Delivery</div>
+            <div class="col-8">{{ deliveryMethod }}</div>
           </div>
 
           <hr />
@@ -80,6 +80,8 @@ export default {
     data() {
     return {
       shippingData: Store.state.shippingData,
+      totalCost: Store.state.totalCost,
+      deliveryMethod: Store.state.deliveryMethod,
     }
   },
 }

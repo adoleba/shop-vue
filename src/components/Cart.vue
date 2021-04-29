@@ -39,7 +39,7 @@
           Total value:
         </div>
         <div class="col-3">
-          {{totalCost.toLocaleString().replace(',', ' ')}} zł
+          {{productsValue.toLocaleString().replace(',', ' ')}} zł
         </div>
       </div>
 
@@ -98,10 +98,8 @@ export default {
     }
   },
   computed: {
-    totalCost() {
-      return Store.state.cart.reduce((accum, product) => {
-            return accum + product.details.price * product.quantity
-        }, 0)
+    productsValue() {
+      return Store.productsValue()
     }
   },
 }

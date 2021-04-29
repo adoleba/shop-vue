@@ -95,7 +95,7 @@
         <div class="p-4">
           <div v-for="carrier in carriers" :key="carrier" class="form-row form-group">
               <div  class="form-check col-7 pl-3">
-                <input class="form-check-input" type="radio" name="delivery" id="delivery" v-bind:value='carrier.price' @change="addDeliveryCost">
+                <input class="form-check-input" type="radio" name='delivery' id="delivery" v-bind:value='carrier.name' @change="addDeliveryCost">
                 <label class="form-check-label" for="delivery">{{ carrier.name }}</label>
               </div>
               <div class="col-5">{{carrier.price.toLocaleString().replace('.', ',')}} zł</div>
@@ -119,7 +119,7 @@
 
           <div class="row pt-3">
             <div  class="col-7">Products value: </div>
-              <div class="col-5">{{ totalCost.toLocaleString().replace(',', ' ') }} zł</div>
+              <div class="col-5">{{ productsValue.toLocaleString().replace(',', ' ') }} zł</div>
           </div>
 
           <div v-if="deliveryCost !== 0" class="row pt-3">
@@ -131,7 +131,7 @@
             <div  class="col-7">
                 <span class="font-weight-bolder">Total value:</span>
               </div>
-              <div class="col-5 font-weight-bold">{{ (totalCost + +deliveryCost).toLocaleString().replace(',', ' ').replace('.', ',') }} zł</div>
+              <div class="col-5 font-weight-bold">{{ (totalCost).toLocaleString().replace(',', ' ').replace('.', ',') }} zł</div>
           </div>
         </div>
 
@@ -176,7 +176,6 @@ export default {
       carriers: carriers,
       cart: Store.state,
       deliveryCost: 0,
-      shippingData: Store.state.shippingData
     }
   },
 
@@ -195,7 +194,10 @@ export default {
       }
     },
     addDeliveryCost(event) {
-      this.deliveryCost = event.target.value
+      const deliveryKind = event.target.value
+      const carrier = this.carriers.find(carrier => carrier.name === deliveryKind);
+      this.deliveryCost = carrier.price
+      Store.state.deliveryMethod = carrier.name
     },
     shippingValues() {
       const values = {
@@ -218,11 +220,15 @@ export default {
 
   },
   computed: {
-    totalCost() {
-      return Store.state.cart.reduce((accum, product) => {
-            return accum + product.details.price * product.quantity
-        }, 0)
+    productsValue() {
+      return Store.productsValue()
     },
+    totalCost() {
+      const totalCost = Store.productsValue() + +this.deliveryCost
+      Store.state.totalCost = totalCost
+      return totalCost
+    },
+
   },
 }
 </script>

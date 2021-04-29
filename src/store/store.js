@@ -3,7 +3,9 @@ import { reactive } from 'vue'
 export const Store = {
     state: reactive({
         cart: [],
-        shippingData: []
+        shippingData: [],
+        deliveryMethod: '',
+        totalCost: '',
     }),
     addToCart(product, addedQuantity=1) {
         const locationInCart = this.state.cart.findIndex(p => {
@@ -39,5 +41,10 @@ export const Store = {
         } else {
             this.state.cart[locationInCart].quantity--
         }
+    },
+    productsValue() {
+      return Store.state.cart.reduce((accum, product) => {
+            return accum + product.details.price * product.quantity
+        }, 0)
     },
 }
