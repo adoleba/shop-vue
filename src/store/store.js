@@ -6,6 +6,7 @@ export const Store = {
         shippingData: [],
         deliveryMethod: '',
         totalCost: '',
+        customerKind: '',
     }),
     addToCart(product, addedQuantity=1) {
         const locationInCart = this.state.cart.findIndex(p => {

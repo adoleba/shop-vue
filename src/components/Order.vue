@@ -16,11 +16,11 @@
 
         <div class="form-row form-group">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="customerType" id="privatePerson" value="privatePerson" checked @change="customerData">
+            <input class="form-check-input" type="radio" name="customerType" id="privatePerson" value="privatePerson" v-model='customerKind' @change="customerData">
             <label class="form-check-label" for="privatePerson">Private Person</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="customerType" id="company" value="company" @change="customerData">
+            <input class="form-check-input" type="radio" name="customerType" id="company" value="company" v-model='customerKind' @change="customerData">
             <label class="form-check-label" for="company">Company</label>
           </div>
         </div>
@@ -28,62 +28,62 @@
         <div id="companyData" style="display: none">
           <div class="form-group">
             <label for="companyName">Company Name</label>
-            <input id="companyName" type="text" class="form-control" />
+            <input id="companyName" type="text" class="form-control" v-model="shippingData['companyName']" />
           </div>
           <div class="form-group">
             <label for="nip">NIP number</label>
-            <input id="nip" type="text" class="form-control" />
+            <input id="nip" type="text" class="form-control" v-model="shippingData['nip']"/>
           </div>
         </div>
 
-        <div id="privatePersonData">
+        <div id="privatePersonData" style="display: none">
           <div class="form-row">
             <div class="form-group col-6">
               <label for="firstName">First Name</label>
-              <input id="firstName" type="text" class="form-control" />
+              <input id="firstName" type="text" class="form-control" v-model="shippingData['firstName']"/>
             </div>
             <div class="form-group col-6">
               <label for="lastName">Last Name</label>
-              <input id="lastName" type="text" class="form-control" />
+              <input id="lastName" type="text" class="form-control" v-model="shippingData['lastName']"/>
             </div>
           </div>
         </div>
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input id="email" type="text" class="form-control" />
+          <input id="email" type="text" class="form-control" v-model="shippingData['email']"/>
         </div>
 
         <div class="form-group">
           <label for="street">Street</label>
-          <input id="street" type="text" class="form-control" />
+          <input id="street" type="text" class="form-control" v-model="shippingData['street']"/>
         </div>
 
         <div class="form-row">
           <div class="form-group col-6">
             <label for="streetNumber">Street number</label>
-            <input id="streetNumber" type="text" class="form-control" />
+            <input id="streetNumber" type="text" class="form-control" v-model="shippingData['streetNumber']"/>
           </div>
           <div class="form-group col-6">
             <label for="apartmentNumber">Apartment number</label>
-            <input id="apartmentNumber" type="text" class="form-control" />
+            <input id="apartmentNumber" type="text" class="form-control" v-model="shippingData['apartmentNumber']"/>
           </div>
         </div>
 
         <div class="form-row">
           <div class="form-group col-4">
             <label for="postalCode">Postal code</label>
-            <input id="postalCode" type="text" class="form-control" />
+            <input id="postalCode" type="text" class="form-control" v-model="shippingData['postalCode']"/>
           </div>
           <div class="form-group col-8">
             <label for="city">City</label>
-            <input id="city" type="text" class="form-control" />
+            <input id="city" type="text" class="form-control" v-model="shippingData['city']"/>
           </div>
         </div>
 
         <div class="form-group">
           <label for="comments">Comments</label>
-          <textarea id="comments" class="form-control" />
+          <textarea id="comments" class="form-control" v-model="shippingData['comments']"/>
         </div>
 
       </div>
@@ -176,6 +176,8 @@ export default {
       carriers: carriers,
       cart: Store.state,
       deliveryCost: 0,
+      shippingData: Store.state.shippingData,
+      customerKind: Store.state.customerKind,
     }
   },
 
@@ -187,10 +189,16 @@ export default {
       if (document.getElementById('privatePerson').checked === true) {
         privatePersonData.style.display = 'block';
         companyData.style.display = 'none';
+        Store.state.shippingData['companyName'] = '';
+        Store.state.shippingData['nip'] = '';
+        Store.state.customerKind = 'privatePerson';
       }
       if (document.getElementById('company').checked === true) {
         privatePersonData.style.display = 'none';
         companyData.style.display = 'block';
+        Store.state.shippingData['firstName'] = '';
+        Store.state.shippingData['lastName'] = '';
+        Store.state.customerKind = 'company';
       }
     },
     addDeliveryCost(event) {
@@ -210,13 +218,13 @@ export default {
         'streetNumber': document.querySelector("input[id=streetNumber]").value,
         'apartmentNumber': document.querySelector("input[id=apartmentNumber]").value,
         'postalCode': document.querySelector("input[id=postalCode]").value,
-        'city': document.querySelector("input[id=nip]").value,
+        'city': document.querySelector("input[id=city]").value,
         'comments': document.querySelector("textarea[id=comments]").value,
       }
       if (Store.state.shippingData.length === 0) {
         Store.state.shippingData.push(values)
       }
-    }
+    },
 
   },
   computed: {
