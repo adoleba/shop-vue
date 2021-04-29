@@ -39,12 +39,12 @@
         <div id="privatePersonData">
           <div class="form-row">
             <div class="form-group col-6">
-              <label for="firstname">First Name</label>
-              <input id="firstname" type="text" class="form-control" />
+              <label for="firstName">First Name</label>
+              <input id="firstName" type="text" class="form-control" />
             </div>
             <div class="form-group col-6">
-              <label for="lastname">Last Name</label>
-              <input id="lastname" type="text" class="form-control" />
+              <label for="lastName">Last Name</label>
+              <input id="lastName" type="text" class="form-control" />
             </div>
           </div>
         </div>
@@ -79,6 +79,11 @@
             <label for="city">City</label>
             <input id="city" type="text" class="form-control" />
           </div>
+        </div>
+
+        <div class="form-group">
+          <label for="comments">Comments</label>
+          <textarea id="comments" class="form-control" />
         </div>
 
       </div>
@@ -149,7 +154,7 @@
           </div>
 
           <div class="row px-4 pt-4 justify-content-center">
-              <button class="btn btn-success btn-lg rounded">Confirm and pay</button>
+            <router-link class="btn btn-success rounded btn-lg" :to="{ name: 'orderConfirm' }" v-on:click="shippingValues()">Confirm and pay</router-link>
           </div>
 
         </div>
@@ -171,6 +176,7 @@ export default {
       carriers: carriers,
       cart: Store.state,
       deliveryCost: 0,
+      shippingData: Store.state.shippingData
     }
   },
 
@@ -190,6 +196,24 @@ export default {
     },
     addDeliveryCost(event) {
       this.deliveryCost = event.target.value
+    },
+    shippingValues() {
+      const values = {
+        'companyName': document.querySelector("input[id=companyName]").value,
+        'nip': document.querySelector("input[id=nip]").value,
+        'firstName': document.querySelector("input[id=firstName]").value,
+        'lastName': document.querySelector("input[id=lastName]").value,
+        'email': document.querySelector("input[id=email]").value,
+        'street': document.querySelector("input[id=street]").value,
+        'streetNumber': document.querySelector("input[id=streetNumber]").value,
+        'apartmentNumber': document.querySelector("input[id=apartmentNumber]").value,
+        'postalCode': document.querySelector("input[id=postalCode]").value,
+        'city': document.querySelector("input[id=nip]").value,
+        'comments': document.querySelector("textarea[id=comments]").value,
+      }
+      if (Store.state.shippingData.length === 0) {
+        Store.state.shippingData.push(values)
+      }
     }
 
   },

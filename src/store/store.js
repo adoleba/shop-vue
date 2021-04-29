@@ -3,12 +3,12 @@ import { reactive } from 'vue'
 export const Store = {
     state: reactive({
         cart: [],
+        shippingData: []
     }),
     addToCart(product, addedQuantity=1) {
         const locationInCart = this.state.cart.findIndex(p => {
             return p.details.id === product.id
         })
-        console.log(addedQuantity)
         if (locationInCart === -1) {
             this.state.cart.push({
                 details: product,
@@ -39,5 +39,5 @@ export const Store = {
         } else {
             this.state.cart[locationInCart].quantity--
         }
-    }
+    },
 }
