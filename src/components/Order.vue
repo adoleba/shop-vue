@@ -225,12 +225,9 @@ export default {
         'city': document.querySelector("input[id=city]").value,
         'comments': document.querySelector("textarea[id=comments]").value,
       }
-      if (Store.state.shippingData.length === 0) {
-        Store.state.shippingData.push(values)
-      }
+      Object.assign(Store.state.shippingData, values)
     },
     customerForm: function () {
-      console.log('Customer Form')
       const privatePersonData = document.getElementById('privatePersonData')
       const companyData = document.getElementById('companyData')
       privatePersonData.classList.add('hiddenForm')
@@ -243,7 +240,6 @@ export default {
 
       }
       if (Store.state.customerKind === 'company') {
-        console.log('zaznaczona firma')
         document.getElementById('companyData').style.display = 'block';
         Store.state.shippingData['firstName'] = '';
         Store.state.shippingData['lastName'] = '';
