@@ -10,7 +10,7 @@
     </div>
   </div>
 
-  <div class="row pb-4">
+  <div class="row pb-4" id="test">
     <div class="col-6">
       <div class="p-5 border rounded">
 
@@ -25,7 +25,7 @@
           </div>
         </div>
 
-        <div id="companyData" style="display: none">
+        <div id="companyData">
           <div class="form-group">
             <label for="companyName">Company Name</label>
             <input id="companyName" type="text" class="form-control" v-model="shippingData['companyName']" />
@@ -36,7 +36,7 @@
           </div>
         </div>
 
-        <div id="privatePersonData" style="display: none">
+        <div id="privatePersonData">
           <div class="form-row">
             <div class="form-group col-6">
               <label for="firstName">First Name</label>
@@ -171,6 +171,10 @@ import {Store} from "../store/store";
 export default {
   name: "Order",
 
+  mounted() {
+    this.customerForm()
+  },
+
   data() {
     return {
       carriers: carriers,
@@ -182,7 +186,7 @@ export default {
   },
 
   methods: {
-    customerData(){
+    customerData() {
       const privatePersonData = document.getElementById('privatePersonData')
       const companyData = document.getElementById('companyData')
 
@@ -225,8 +229,28 @@ export default {
         Store.state.shippingData.push(values)
       }
     },
+    customerForm: function () {
+      console.log('Customer Form')
+      const privatePersonData = document.getElementById('privatePersonData')
+      const companyData = document.getElementById('companyData')
+      privatePersonData.classList.add('hiddenForm')
+      companyData.classList.add('hiddenForm')
 
+      if (Store.state.customerKind === 'privatePerson') {
+        document.getElementById('privatePersonData').style.display = 'block';
+        Store.state.shippingData['companyName'] = '';
+        Store.state.shippingData['nip'] = '';
+
+      }
+      if (Store.state.customerKind === 'company') {
+        console.log('zaznaczona firma')
+        document.getElementById('companyData').style.display = 'block';
+        Store.state.shippingData['firstName'] = '';
+        Store.state.shippingData['lastName'] = '';
+      }
+    },
   },
+
   computed: {
     productsValue() {
       return Store.productsValue()
@@ -236,11 +260,14 @@ export default {
       Store.state.totalCost = totalCost
       return totalCost
     },
-
   },
 }
 </script>
 
 <style scoped>
+
+.hiddenForm {
+  display: none;
+}
 
 </style>
