@@ -5,6 +5,7 @@ export const Store = {
         cart: [],
         shippingData: [],
         deliveryMethod: '',
+        deliveryCost: 0,
         totalCost: '',
         customerKind: '',
     }),

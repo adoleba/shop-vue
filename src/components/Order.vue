@@ -113,11 +113,14 @@
         <div class="p-4">
           <div v-for="carrier in carriers" :key="carrier" class="form-row form-group">
               <div  class="form-check col-7 pl-3">
-                <input class="form-check-input" type="radio" name='delivery' id="delivery" v-bind:value='carrier.name' @change="addDeliveryCost">
+                <input class="form-check-input" type="radio" name='delivery' id="delivery" v-bind:value='carrier.name' v-model='state.deliveryMethod' @change="addDeliveryCost">
                 <label class="form-check-label" for="delivery">{{ carrier.name }}</label>
               </div>
               <div class="col-5">{{carrier.price.toLocaleString().replace('.', ',')}} zł</div>
           </div>
+          <span v-if="v$.deliveryMethod.$error">
+            {{ v$.deliveryMethod.$errors[0].$message }}
+          </span>
         </div>
       </div>
 
@@ -200,7 +203,7 @@ export default {
     return {
       carriers: carriers,
       cart: Store.state,
-      deliveryCost: 0,
+      deliveryCost: Store.state.deliveryCost,
       shippingData: Store.state.shippingData,
       customerKind: Store.state.customerKind,
     }
@@ -213,7 +216,9 @@ export default {
       streetNumber: Store.state.shippingData['streetNumber'] === undefined ? '' : Store.state.shippingData['streetNumber'],
       postalCode: Store.state.shippingData['postalCode'] === undefined ? '' : Store.state.shippingData['postalCode'],
       city: Store.state.shippingData['city'] === undefined ? '' : Store.state.shippingData['city'],
+      deliveryMethod: Store.state.deliveryMethod === undefined ? '' : Store.state.deliveryMethod,
     })
+    console.log(Store.state.deliveryMethod)
     const rules = computed(() => {
       return {
         customerKind: { required },
@@ -222,6 +227,7 @@ export default {
         streetNumber: { required },
         postalCode: { required, minLength: minLength(5) },
         city: { required, minLength: minLength(3) },
+        deliveryMethod: {required},
       }
     })
     const v$ = useVuelidate(rules, state)
@@ -252,6 +258,7 @@ export default {
       const carrier = this.carriers.find(carrier => carrier.name === deliveryKind);
       this.deliveryCost = carrier.price
       Store.state.deliveryMethod = carrier.name
+      Store.state.deliveryCost = carrier.price
     },
     saveShippingValues() {
       this.v$.$validate()
@@ -300,7 +307,7 @@ export default {
       return Store.productsValue()
     },
     totalCost() {
-      const totalCost = Store.productsValue() + +this.deliveryCost
+      const totalCost = Store.productsValue() + +Store.state.deliveryCost
       Store.state.totalCost = totalCost
       return totalCost
     },
