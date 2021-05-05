@@ -8,6 +8,8 @@ export const Store = {
         deliveryCost: 0,
         totalCost: '',
         customerKind: '',
+        termsAccepted: false,
+        marketingAccepted: false,
     }),
     addToCart(product, addedQuantity=1) {
         const locationInCart = this.state.cart.findIndex(p => {

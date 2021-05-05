@@ -16,11 +16,11 @@
 
         <div class="form-row form-group">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="customerType" id="privatePerson" value="privatePerson" v-model='state.customerKind' @change="customerData">
+            <input class="form-check-input" type="radio" name="customerType" id="privatePerson" value="privatePerson" v-model='validate.customerKind' @change="customerData">
             <label class="form-check-label" for="privatePerson">Private Person</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="customerType" id="company" value="company" v-model='state.customerKind' @change="customerData">
+            <input class="form-check-input" type="radio" name="customerType" id="company" value="company" v-model='validate.customerKind' @change="customerData">
             <label class="form-check-label" for="company">Company</label>
           </div>
           <span v-if="v$.customerKind.$error">
@@ -54,7 +54,7 @@
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input id="email" type="text" class="form-control" v-model="state.email"/>
+          <input id="email" type="text" class="form-control" v-model="validate.email"/>
            <span v-if="v$.email.$error">
              {{ v$.email.$errors[0].$message }}
            </span>
@@ -62,7 +62,7 @@
 
         <div class="form-group">
           <label for="street">Street</label>
-          <input id="street" type="text" class="form-control" v-model="state.street"/>
+          <input id="street" type="text" class="form-control" v-model="validate.street"/>
           <span v-if="v$.street.$error">
              {{ v$.street.$errors[0].$message }}
            </span>
@@ -71,7 +71,7 @@
         <div class="form-row">
           <div class="form-group col-6">
             <label for="streetNumber">Street number</label>
-            <input id="streetNumber" type="text" class="form-control" v-model="state.streetNumber"/>
+            <input id="streetNumber" type="text" class="form-control" v-model="validate.streetNumber"/>
             <span v-if="v$.streetNumber.$error">
              {{ v$.streetNumber.$errors[0].$message }}
            </span>
@@ -85,14 +85,14 @@
         <div class="form-row">
           <div class="form-group col-4">
             <label for="postalCode">Postal code</label>
-            <input id="postalCode" type="text" class="form-control" v-model="state.postalCode"/>
+            <input id="postalCode" type="text" class="form-control" v-model="validate.postalCode"/>
             <span v-if="v$.postalCode.$error">
              {{ v$.postalCode.$errors[0].$message }}
            </span>
           </div>
           <div class="form-group col-8">
             <label for="city">City</label>
-            <input id="city" type="text" class="form-control" v-model="state.city"/>
+            <input id="city" type="text" class="form-control" v-model="validate.city"/>
             <span v-if="v$.city.$error">
              {{ v$.city.$errors[0].$message }}
            </span>
@@ -113,7 +113,7 @@
         <div class="p-4">
           <div v-for="carrier in carriers" :key="carrier" class="form-row form-group">
               <div  class="form-check col-7 pl-3">
-                <input class="form-check-input" type="radio" name='delivery' id="delivery" v-bind:value='carrier.name' v-model='state.deliveryMethod' @change="addDeliveryCost">
+                <input class="form-check-input" type="radio" name='delivery' id="delivery" v-bind:value='carrier.name' v-model='validate.deliveryMethod' @change="addDeliveryCost">
                 <label class="form-check-label" for="delivery">{{ carrier.name }}</label>
               </div>
               <div class="col-5">{{carrier.price.toLocaleString().replace('.', ',')}} zł</div>
@@ -160,15 +160,16 @@
           <div class="row px-3 py-1">
             <div class="col-1">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="terms">
+                <input class="form-check-input" type="checkbox" id="terms_accepted" v-model="validate.validTermAccepted" @change="agreeTerms">
               </div>
             </div>
             <div class="col-10">Etiam sit amet velit ullamcorper dui finibus ultrices porta at justo</div>
+            <span v-if="v$.validTermAccepted.$error">You have to accept terms </span>
           </div>
           <div class="row px-3 py-1">
             <div class="col-1">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="marketing">
+                <input class="form-check-input" type="checkbox" id="marketing_accepted" v-model="marketingAccepted" @change="agreeMarketing">
               </div>
             </div>
             <div class="col-10">Suspendisse et magna tempus nisi pretium aliquet in in sapien</div>
@@ -191,6 +192,7 @@ import {Store} from "../store/store";
 import { required, email, minLength } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import { reactive, computed } from "vue";
+import {isTermChecked} from "../data/validators";
 
 export default {
   name: "Order",
@@ -206,10 +208,12 @@ export default {
       deliveryCost: Store.state.deliveryCost,
       shippingData: Store.state.shippingData,
       customerKind: Store.state.customerKind,
+      termsAccepted: Store.state.termsAccepted,
+      marketingAccepted: Store.state.marketingAccepted,
     }
   },
   setup() {
-    const state = reactive({
+    const validate = reactive({
       customerKind: Store.state.customerKind === undefined ? '' : Store.state.customerKind,
       email: Store.state.shippingData['email'] === undefined ? '' : Store.state.shippingData['email'],
       street: Store.state.shippingData['street'] === undefined ? '' : Store.state.shippingData['street'],
@@ -217,8 +221,8 @@ export default {
       postalCode: Store.state.shippingData['postalCode'] === undefined ? '' : Store.state.shippingData['postalCode'],
       city: Store.state.shippingData['city'] === undefined ? '' : Store.state.shippingData['city'],
       deliveryMethod: Store.state.deliveryMethod === undefined ? '' : Store.state.deliveryMethod,
+      validTermAccepted: document.querySelector("input[id=terms_accepted]") === null ? Store.state.termsAccepted : this.termsAccepted,
     })
-    console.log(Store.state.deliveryMethod)
     const rules = computed(() => {
       return {
         customerKind: { required },
@@ -227,11 +231,12 @@ export default {
         streetNumber: { required },
         postalCode: { required, minLength: minLength(5) },
         city: { required, minLength: minLength(3) },
-        deliveryMethod: {required},
+        deliveryMethod: { required },
+        validTermAccepted: { isTermChecked }
       }
     })
-    const v$ = useVuelidate(rules, state)
-    return { state, v$ }
+    const v$ = useVuelidate(rules, validate)
+    return { validate, v$ }
   },
   methods: {
     customerData() {
@@ -260,8 +265,21 @@ export default {
       Store.state.deliveryMethod = carrier.name
       Store.state.deliveryCost = carrier.price
     },
+    agreeTerms(event) {
+      const agreedTerms = event.target.checked
+      Store.state.termsAccepted = agreedTerms
+      this.termsAccepted = agreedTerms
+    },
+
+    agreeMarketing(event) {
+      const agreedMarketing = event.target.checked
+      Store.state.marketingAccepted = agreedMarketing
+    },
+
     saveShippingValues() {
       this.v$.$validate()
+      console.log(this.v$.$errors)
+
       if (!this.v$.$error) {
         const values = {
         'companyName': document.querySelector("input[id=companyName]").value,
@@ -276,6 +294,7 @@ export default {
         'city': document.querySelector("input[id=city]").value,
         'comments': document.querySelector("textarea[id=comments]").value,
         }
+
         Object.assign(Store.state.shippingData, values)
         this.$router.push({name: 'orderConfirm'})
 
