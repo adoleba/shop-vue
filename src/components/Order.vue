@@ -16,13 +16,16 @@
 
         <div class="form-row form-group">
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="customerType" id="privatePerson" value="privatePerson" v-model='customerKind' @change="customerData">
+            <input class="form-check-input" type="radio" name="customerType" id="privatePerson" value="privatePerson" v-model='state.customerKind' @change="customerData">
             <label class="form-check-label" for="privatePerson">Private Person</label>
           </div>
           <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="customerType" id="company" value="company" v-model='customerKind' @change="customerData">
+            <input class="form-check-input" type="radio" name="customerType" id="company" value="company" v-model='state.customerKind' @change="customerData">
             <label class="form-check-label" for="company">Company</label>
           </div>
+          <span v-if="v$.customerKind.$error">
+            {{ v$.customerKind.$errors[0].$message }}
+          </span>
         </div>
 
         <div id="companyData">
@@ -51,18 +54,27 @@
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input id="email" type="text" class="form-control" v-model="shippingData['email']"/>
+          <input id="email" type="text" class="form-control" v-model="state.email"/>
+           <span v-if="v$.email.$error">
+             {{ v$.email.$errors[0].$message }}
+           </span>
         </div>
 
         <div class="form-group">
           <label for="street">Street</label>
-          <input id="street" type="text" class="form-control" v-model="shippingData['street']"/>
+          <input id="street" type="text" class="form-control" v-model="state.street"/>
+          <span v-if="v$.street.$error">
+             {{ v$.street.$errors[0].$message }}
+           </span>
         </div>
 
         <div class="form-row">
           <div class="form-group col-6">
             <label for="streetNumber">Street number</label>
-            <input id="streetNumber" type="text" class="form-control" v-model="shippingData['streetNumber']"/>
+            <input id="streetNumber" type="text" class="form-control" v-model="state.streetNumber"/>
+            <span v-if="v$.streetNumber.$error">
+             {{ v$.streetNumber.$errors[0].$message }}
+           </span>
           </div>
           <div class="form-group col-6">
             <label for="apartmentNumber">Apartment number</label>
@@ -73,11 +85,17 @@
         <div class="form-row">
           <div class="form-group col-4">
             <label for="postalCode">Postal code</label>
-            <input id="postalCode" type="text" class="form-control" v-model="shippingData['postalCode']"/>
+            <input id="postalCode" type="text" class="form-control" v-model="state.postalCode"/>
+            <span v-if="v$.postalCode.$error">
+             {{ v$.postalCode.$errors[0].$message }}
+           </span>
           </div>
           <div class="form-group col-8">
             <label for="city">City</label>
-            <input id="city" type="text" class="form-control" v-model="shippingData['city']"/>
+            <input id="city" type="text" class="form-control" v-model="state.city"/>
+            <span v-if="v$.city.$error">
+             {{ v$.city.$errors[0].$message }}
+           </span>
           </div>
         </div>
 
@@ -154,7 +172,7 @@
           </div>
 
           <div class="row px-4 pt-4 justify-content-center">
-            <router-link class="btn btn-success rounded btn-lg" :to="{ name: 'orderConfirm' }" v-on:click="shippingValues()">Confirm and pay</router-link>
+            <button class="btn btn-success rounded btn-lg" v-on:click="saveShippingValues()">Confirm and pay</button>
           </div>
 
         </div>
@@ -167,6 +185,9 @@
 <script>
 import carriers from "../data/delivery";
 import {Store} from "../store/store";
+import { required, email, minLength } from "@vuelidate/validators";
+import { useVuelidate } from "@vuelidate/core";
+import { reactive, computed } from "vue";
 
 export default {
   name: "Order",
@@ -184,7 +205,28 @@ export default {
       customerKind: Store.state.customerKind,
     }
   },
-
+  setup() {
+    const state = reactive({
+      customerKind: Store.state.customerKind === undefined ? '' : Store.state.customerKind,
+      email: Store.state.shippingData['email'] === undefined ? '' : Store.state.shippingData['email'],
+      street: Store.state.shippingData['street'] === undefined ? '' : Store.state.shippingData['street'],
+      streetNumber: Store.state.shippingData['streetNumber'] === undefined ? '' : Store.state.shippingData['streetNumber'],
+      postalCode: Store.state.shippingData['postalCode'] === undefined ? '' : Store.state.shippingData['postalCode'],
+      city: Store.state.shippingData['city'] === undefined ? '' : Store.state.shippingData['city'],
+    })
+    const rules = computed(() => {
+      return {
+        customerKind: { required },
+        email: { required, email },
+        street: { required, minLength: minLength(3) },
+        streetNumber: { required },
+        postalCode: { required, minLength: minLength(5) },
+        city: { required, minLength: minLength(3) },
+      }
+    })
+    const v$ = useVuelidate(rules, state)
+    return { state, v$ }
+  },
   methods: {
     customerData() {
       const privatePersonData = document.getElementById('privatePersonData')
@@ -211,8 +253,10 @@ export default {
       this.deliveryCost = carrier.price
       Store.state.deliveryMethod = carrier.name
     },
-    shippingValues() {
-      const values = {
+    saveShippingValues() {
+      this.v$.$validate()
+      if (!this.v$.$error) {
+        const values = {
         'companyName': document.querySelector("input[id=companyName]").value,
         'nip': document.querySelector("input[id=nip]").value,
         'firstName': document.querySelector("input[id=firstName]").value,
@@ -224,9 +268,13 @@ export default {
         'postalCode': document.querySelector("input[id=postalCode]").value,
         'city': document.querySelector("input[id=city]").value,
         'comments': document.querySelector("textarea[id=comments]").value,
+        }
+        Object.assign(Store.state.shippingData, values)
+        this.$router.push({name: 'orderConfirm'})
+
       }
-      Object.assign(Store.state.shippingData, values)
     },
+
     customerForm: function () {
       const privatePersonData = document.getElementById('privatePersonData')
       const companyData = document.getElementById('companyData')
