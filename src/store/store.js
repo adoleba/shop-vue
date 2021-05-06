@@ -7,7 +7,7 @@ export const Store = {
         deliveryMethod: '',
         deliveryCost: 0,
         totalCost: '',
-        customerKind: '',
+        invoice: false,
         termsAccepted: false,
         marketingAccepted: false,
     }),

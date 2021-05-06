@@ -10,107 +10,91 @@
     </div>
   </div>
 
-  <div class="row pb-4" id="test">
+  <div class="row pb-4">
     <div class="col-6">
       <div class="p-5 border rounded">
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="firstName">First Name</label>
+            <input id="firstName" type="text" class="form-control" v-model="validate.firstName"/>
+            <span v-if="v$.firstName.$error">Value is required </span>
+          </div>
+          <div class="form-group col-6">
+            <label for="lastName">Last Name</label>
+            <input id="lastName" type="text" class="form-control" v-model="validate.lastName"/>
+            <span v-if="v$.lastName.$error">Value is required </span>
+          </div>
+        </div>
 
-        <div class="form-row form-group">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="customerType" id="privatePerson" value="privatePerson" v-model='validate.customerKind' @change="customerData">
-            <label class="form-check-label" for="privatePerson">Private Person</label>
+        <div class="form-group">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="invoice" @change="invoiceForm">
+            <div>I need an invoice</div>
           </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="customerType" id="company" value="company" v-model='validate.customerKind' @change="customerData">
-            <label class="form-check-label" for="company">Company</label>
+
+          <div id="companyData">
+            <div class="form-group pt-2">
+              <label for="companyName">Company Name</label>
+              <input id="companyName" type="text" class="form-control" v-model="validate.companyName" />
+            </div>
+            <div class="form-group">
+              <label for="nip">NIP number</label>
+              <input id="nip" type="text" class="form-control" v-model="validate.nip"/>
+            </div>
           </div>
-          <span v-if="v$.customerKind.$error">
-            {{ v$.customerKind.$errors[0].$message }}
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" type="text" class="form-control" v-model="validate.email"/>
+          <span v-if="v$.email.$error">
+            {{ v$.email.$errors[0].$message }}
           </span>
         </div>
 
-        <div id="companyData">
-          <div class="form-group">
-            <label for="companyName">Company Name</label>
-            <input id="companyName" type="text" class="form-control" v-model="validate.companyName" />
-            <span v-if="v$.companyName.$error">Value is required </span>
+        <div class="form-group">
+          <label for="street">Street</label>
+          <input id="street" type="text" class="form-control" v-model="validate.street"/>
+          <span v-if="v$.street.$error">
+            {{ v$.street.$errors[0].$message }}
+          </span>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label for="streetNumber">Street number</label>
+            <input id="streetNumber" type="text" class="form-control" v-model="validate.streetNumber"/>
+            <span v-if="v$.streetNumber.$error">
+              {{ v$.streetNumber.$errors[0].$message }}
+            </span>
           </div>
-          <div class="form-group">
-            <label for="nip">NIP number</label>
-            <input id="nip" type="text" class="form-control" v-model="validate.nip"/>
-            <span v-if="v$.nip.$error">Value is required </span>
+          <div class="form-group col-6">
+            <label for="apartmentNumber">Apartment number</label>
+            <input id="apartmentNumber" type="text" class="form-control" v-model="shippingData['apartmentNumber']"/>
           </div>
         </div>
 
-        <div id="privatePersonData">
-          <div class="form-row">
-            <div class="form-group col-6">
-              <label for="firstName">First Name</label>
-              <input id="firstName" type="text" class="form-control" v-model="validate.firstName"/>
-              <span v-if="v$.firstName.$error">Value is required </span>
-            </div>
-            <div class="form-group col-6">
-              <label for="lastName">Last Name</label>
-              <input id="lastName" type="text" class="form-control" v-model="validate.lastName"/>
-              <span v-if="v$.lastName.$error">Value is required </span>
-            </div>
+        <div class="form-row">
+          <div class="form-group col-4">
+            <label for="postalCode">Postal code</label>
+            <input id="postalCode" type="text" class="form-control" v-model="validate.postalCode"/>
+            <span v-if="v$.postalCode.$error">
+              {{ v$.postalCode.$errors[0].$message }}
+            </span>
+          </div>
+          <div class="form-group col-8">
+            <label for="city">City</label>
+            <input id="city" type="text" class="form-control" v-model="validate.city"/>
+            <span v-if="v$.city.$error">
+              {{ v$.city.$errors[0].$message }}
+            </span>
           </div>
         </div>
 
-        <div id="commonShippingData" style="display: none">
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input id="email" type="text" class="form-control" v-model="validate.email"/>
-             <span v-if="v$.email.$error">
-               {{ v$.email.$errors[0].$message }}
-             </span>
-          </div>
-
-          <div class="form-group">
-            <label for="street">Street</label>
-            <input id="street" type="text" class="form-control" v-model="validate.street"/>
-            <span v-if="v$.street.$error">
-               {{ v$.street.$errors[0].$message }}
-             </span>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group col-6">
-              <label for="streetNumber">Street number</label>
-              <input id="streetNumber" type="text" class="form-control" v-model="validate.streetNumber"/>
-              <span v-if="v$.streetNumber.$error">
-               {{ v$.streetNumber.$errors[0].$message }}
-             </span>
-            </div>
-            <div class="form-group col-6">
-              <label for="apartmentNumber">Apartment number</label>
-              <input id="apartmentNumber" type="text" class="form-control" v-model="shippingData['apartmentNumber']"/>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group col-4">
-              <label for="postalCode">Postal code</label>
-              <input id="postalCode" type="text" class="form-control" v-model="validate.postalCode"/>
-              <span v-if="v$.postalCode.$error">
-               {{ v$.postalCode.$errors[0].$message }}
-             </span>
-            </div>
-            <div class="form-group col-8">
-              <label for="city">City</label>
-              <input id="city" type="text" class="form-control" v-model="validate.city"/>
-              <span v-if="v$.city.$error">
-               {{ v$.city.$errors[0].$message }}
-             </span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="comments">Comments</label>
-            <textarea id="comments" class="form-control" v-model="shippingData['comments']"/>
-          </div>
-
+        <div class="form-group">
+          <label for="comments">Comments</label>
+          <textarea id="comments" class="form-control" v-model="shippingData['comments']"/>
         </div>
-
       </div>
     </div>
 
@@ -196,7 +180,7 @@
 <script>
 import carriers from "../data/delivery";
 import {Store} from "../store/store";
-import { required, email, minLength, requiredIf } from "@vuelidate/validators";
+import { required, email, minLength } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import { reactive, computed } from "vue";
 import { isTermChecked } from "../data/validators";
@@ -205,7 +189,7 @@ export default {
   name: "Order",
 
   mounted() {
-    this.customerForm()
+    this.displayInvoiceData()
   },
 
   data() {
@@ -214,14 +198,12 @@ export default {
       cart: Store.state,
       deliveryCost: Store.state.deliveryCost,
       shippingData: Store.state.shippingData,
-      customerKind: Store.state.customerKind,
       termsAccepted: Store.state.termsAccepted,
       marketingAccepted: Store.state.marketingAccepted,
     }
   },
   setup() {
     const validate = reactive({
-      customerKind: Store.state.customerKind === undefined ? '' : Store.state.customerKind,
       firstName: Store.state.shippingData['firstName'] === undefined ? '' : Store.state.shippingData['firstName'],
       lastName: Store.state.shippingData['lastName'] === undefined ? '' : Store.state.shippingData['lastName'],
       companyName: Store.state.shippingData['companyName'] === undefined ? '' : Store.state.shippingData['companyName'],
@@ -237,11 +219,8 @@ export default {
 
     const rules = computed(() => {
       return {
-        customerKind: { required },
-        firstName: { required: requiredIf(function () {return document.getElementById('privatePerson').checked}) },
-        lastName: { required: requiredIf(function () {return document.getElementById('privatePerson').checked}) },
-        companyName: { required: requiredIf(function () {return document.getElementById('company').checked}) },
-        nip: { required: requiredIf(function () {return document.getElementById('company').checked}) },
+        firstName: { required, minLength: minLength(3) },
+        lastName: { required, minLength: minLength(3) },
         email: { required, email },
         street: { required, minLength: minLength(3) },
         streetNumber: { required },
@@ -255,35 +234,6 @@ export default {
     return { validate, v$ }
   },
   methods: {
-    customerData() {
-      const privatePersonData = document.getElementById('privatePersonData')
-      const companyData = document.getElementById('companyData')
-      const commonShippingData = document.getElementById('commonShippingData')
-
-      if (document.getElementById('privatePerson').checked === true) {
-        privatePersonData.style.display = 'block';
-        commonShippingData.style.display = 'block';
-        companyData.style.display = 'none';
-        this.shippingData['companyName'] = '';
-        Store.state.shippingData['companyName'] = '';
-        this.shippingData['nip'] = '';
-        Store.state.shippingData['nip'] = '';
-        this.customerKind = 'privatePerson';
-        Store.state.customerKind = 'privatePerson';
-        console.log(Store.state.shippingData['companyName'])
-      }
-      if (document.getElementById('company').checked === true) {
-        privatePersonData.style.display = 'none';
-        companyData.style.display = 'block';
-        commonShippingData.style.display = 'block';
-        this.shippingData['firstName'] = '';
-        Store.state.shippingData['firstName'] = '';
-        this.shippingData['lastName'] = '';
-        Store.state.shippingData['lastName'] = '';
-        this.customerKind = 'company';
-        Store.state.customerKind = 'company';
-      }
-    },
     addDeliveryCost(event) {
       const deliveryKind = event.target.value
       const carrier = this.carriers.find(carrier => carrier.name === deliveryKind);
@@ -326,24 +276,24 @@ export default {
       }
     },
 
-    customerForm: function () {
-      const privatePersonData = document.getElementById('privatePersonData')
+    invoiceForm() {
       const companyData = document.getElementById('companyData')
-      privatePersonData.classList.add('hiddenForm')
+
+      if (document.getElementById('invoice').checked) {
+        companyData.style.display = 'block'
+        Store.state.invoice = true
+      } else {
+        companyData.style.display = 'none'
+        Store.state.invoice = false
+      }
+    },
+
+    displayInvoiceData: function () {
+      const companyData = document.getElementById('companyData')
       companyData.classList.add('hiddenForm')
 
-      if (Store.state.customerKind === 'privatePerson') {
-        document.getElementById('privatePersonData').style.display = 'block';
-        document.getElementById('commonShippingData').style.display = 'block'
-        Store.state.shippingData['companyName'] = '';
-        Store.state.shippingData['nip'] = '';
-
-      }
-      if (Store.state.customerKind === 'company') {
-        document.getElementById('companyData').style.display = 'block';
-        document.getElementById('commonShippingData').style.display = 'block'
-        Store.state.shippingData['firstName'] = '';
-        Store.state.shippingData['lastName'] = '';
+      if (Store.state.invoice === 'true') {
+        companyData.style.display = 'block';
       }
     },
   },
