@@ -26,14 +26,17 @@
             <div class="col"><span class="font-weight-bold">Your Shipping Data</span> </div>
           </div>
 
-          <div v-if="shippingData['companyName']" class="row px-4 py-1">
-            <div class="col-4">Company Name:</div>
-            <div class="col-8"> {{shippingData['companyName']}}</div>
-          </div>
+          <div v-if="invoice">
+            <div v-if="shippingData['companyName']" class="row px-4 py-1">
+              <div class="col-4">Company Name:</div>
+              <div class="col-8"> {{shippingData['companyName']}}</div>
+            </div>
 
-          <div v-if="shippingData['nip']" class="row px-4 py-1">
-            <div class="col-4">Nip Number:</div>
-            <div class="col-8"> {{shippingData['nip']}}</div>
+            <div v-if="shippingData['nip']" class="row px-4 py-1">
+              <div class="col-4">Nip Number:</div>
+              <div class="col-8"> {{shippingData['nip']}}</div>
+            </div>
+
           </div>
 
           <div v-if="shippingData['firstName']" class="row px-4 py-1">
@@ -80,6 +83,7 @@ export default {
       shippingData: Store.state.shippingData,
       totalCost: Store.state.totalCost,
       deliveryMethod: Store.state.deliveryMethod,
+      invoice: Store.state.invoice,
     }
   },
 }

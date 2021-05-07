@@ -28,11 +28,11 @@
 
         <div class="form-group">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="invoice" @change="invoiceForm">
+            <input class="form-check-input" type="checkbox" id="invoice" v-model='invoice' @change="invoiceForm">
             <div>I need an invoice</div>
           </div>
 
-          <div id="companyData">
+          <div id="companyData" style="display: none">
             <div class="form-group pt-2">
               <label for="companyName">Company Name</label>
               <input id="companyName" type="text" class="form-control" v-model="validate.companyName" />
@@ -196,6 +196,7 @@ export default {
     return {
       carriers: carriers,
       cart: Store.state,
+      invoice: Store.state.invoice,
       deliveryCost: Store.state.deliveryCost,
       shippingData: Store.state.shippingData,
       termsAccepted: Store.state.termsAccepted,
@@ -261,6 +262,7 @@ export default {
         'nip': document.querySelector("input[id=nip]").value,
         'firstName': document.querySelector("input[id=firstName]").value,
         'lastName': document.querySelector("input[id=lastName]").value,
+        'invoice': document.querySelector("input[id=invoice]").checked,
         'email': document.querySelector("input[id=email]").value,
         'street': document.querySelector("input[id=street]").value,
         'streetNumber': document.querySelector("input[id=streetNumber]").value,
@@ -269,7 +271,6 @@ export default {
         'city': document.querySelector("input[id=city]").value,
         'comments': document.querySelector("textarea[id=comments]").value,
         }
-
         Object.assign(Store.state.shippingData, values)
         this.$router.push({name: 'orderConfirm'})
 
@@ -290,9 +291,7 @@ export default {
 
     displayInvoiceData: function () {
       const companyData = document.getElementById('companyData')
-      companyData.classList.add('hiddenForm')
-
-      if (Store.state.invoice === 'true') {
+      if (Store.state.invoice === true) {
         companyData.style.display = 'block';
       }
     },
@@ -313,8 +312,5 @@ export default {
 
 <style scoped>
 
-.hiddenForm {
-  display: none;
-}
 
 </style>
