@@ -16,13 +16,13 @@
         <div class="form-row">
           <div class="form-group col-6">
             <label for="firstName">First Name</label>
-            <input id="firstName" type="text" class="form-control" v-model="validate.firstName"/>
-            <span v-if="v$.firstName.$error">{{ v$.firstName.$errors[0].$message }}</span>
+            <input id="firstName" type="text" class="form-control" :class="{'input-error': v$.firstName.$error}" v-model="validate.firstName"/>
+            <span v-if="v$.firstName.$error" class="error-message">{{ v$.firstName.$errors[0].$message }}</span>
           </div>
           <div class="form-group col-6">
             <label for="lastName">Last Name</label>
-            <input id="lastName" type="text" class="form-control" v-model="validate.lastName"/>
-            <span v-if="v$.lastName.$error">{{ v$.lastName.$errors[0].$message }}</span>
+            <input id="lastName" type="text" class="form-control" :class="{'input-error': v$.lastName.$error}" v-model="validate.lastName"/>
+            <span v-if="v$.lastName.$error" class="error-message">{{ v$.lastName.$errors[0].$message }}</span>
           </div>
         </div>
 
@@ -35,40 +35,34 @@
           <div id="companyData" style="display: none">
             <div class="form-group pt-2">
               <label for="companyName">Company Name</label>
-              <input id="companyName" type="text" class="form-control" v-model="validate.companyName" />
-              <span v-if="v$.companyName.$error">Value is required</span>
+              <input id="companyName" type="text" class="form-control" :class="{'input-error': v$.companyName.$error}" v-model="validate.companyName" />
+              <span v-if="v$.companyName.$error" class="error-message">Value is required</span>
             </div>
             <div class="form-group">
               <label for="nip">NIP number</label>
-              <input id="nip" type="text" class="form-control" v-model="validate.nip"/>
-              <span v-if="v$.nip.$error">Value is required</span>
+              <input id="nip" type="text" class="form-control" :class="{'input-error': v$.nip.$error}" v-model="validate.nip"/>
+              <span v-if="v$.nip.$error" class="error-message">Value is required</span>
             </div>
           </div>
         </div>
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input id="email" type="text" class="form-control" v-model="validate.email"/>
-          <span v-if="v$.email.$error">
-            {{ v$.email.$errors[0].$message }}
-          </span>
+          <input id="email" type="text" class="form-control" :class="{'input-error': v$.email.$error}" v-model="validate.email"/>
+          <span v-if="v$.email.$error" class="error-message">{{ v$.email.$errors[0].$message }}</span>
         </div>
 
         <div class="form-group">
           <label for="street">Street</label>
-          <input id="street" type="text" class="form-control" v-model="validate.street"/>
-          <span v-if="v$.street.$error">
-            {{ v$.street.$errors[0].$message }}
-          </span>
+          <input id="street" type="text" class="form-control" :class="{'input-error': v$.street.$error}" v-model="validate.street"/>
+          <span v-if="v$.street.$error" class="error-message">{{ v$.street.$errors[0].$message }}</span>
         </div>
 
         <div class="form-row">
           <div class="form-group col-6">
             <label for="streetNumber">Street number</label>
-            <input id="streetNumber" type="text" class="form-control" v-model="validate.streetNumber"/>
-            <span v-if="v$.streetNumber.$error">
-              {{ v$.streetNumber.$errors[0].$message }}
-            </span>
+            <input id="streetNumber" type="text" class="form-control" :class="{'input-error': v$.streetNumber.$error}" v-model="validate.streetNumber"/>
+            <span v-if="v$.streetNumber.$error" class="error-message">{{ v$.streetNumber.$errors[0].$message }}</span>
           </div>
           <div class="form-group col-6">
             <label for="apartmentNumber">Apartment number</label>
@@ -79,17 +73,13 @@
         <div class="form-row">
           <div class="form-group col-4">
             <label for="postalCode">Postal code</label>
-            <input id="postalCode" type="text" class="form-control" v-model="validate.postalCode"/>
-            <span v-if="v$.postalCode.$error">
-              {{ v$.postalCode.$errors[0].$message }}
-            </span>
+            <input id="postalCode" type="text" class="form-control" :class="{'input-error': v$.postalCode.$error}" v-model="validate.postalCode"/>
+            <span v-if="v$.postalCode.$error" class="error-message">{{ v$.postalCode.$errors[0].$message }}</span>
           </div>
           <div class="form-group col-8">
             <label for="city">City</label>
-            <input id="city" type="text" class="form-control" v-model="validate.city"/>
-            <span v-if="v$.city.$error">
-              {{ v$.city.$errors[0].$message }}
-            </span>
+            <input id="city" type="text" class="form-control" :class="{'input-error': v$.city.$error}" v-model="validate.city"/>
+            <span v-if="v$.city.$error" class="error-message">{{ v$.city.$errors[0].$message }}</span>
           </div>
         </div>
 
@@ -105,15 +95,19 @@
       <div class="border rounded p-3 mb-5">
         <div class="p-4">
           <div v-for="carrier in carriers" :key="carrier" class="form-row form-group">
-              <div  class="form-check col-7 pl-3">
-                <input class="form-check-input" type="radio" name='delivery' id="delivery" v-bind:value='carrier.name' v-model='validate.deliveryMethod' @change="addDeliveryCost">
+              <div class="form-check col-7 pl-3">
+                <input class="form-check-input"
+                       :class="{'input-error': v$.deliveryMethod.$error}"
+                       type="radio" name='delivery'
+                       id="delivery"
+                       v-bind:value='carrier.name'
+                       v-model='validate.deliveryMethod'
+                       @change="addDeliveryCost">
                 <label class="form-check-label" for="delivery">{{ carrier.name }}</label>
               </div>
               <div class="col-5">{{carrier.price.toLocaleString().replace('.', ',')}} zł</div>
           </div>
-          <span v-if="v$.deliveryMethod.$error">
-            {{ v$.deliveryMethod.$errors[0].$message }}
-          </span>
+          <span v-if="v$.deliveryMethod.$error" class="error-message">{{ v$.deliveryMethod.$errors[0].$message }}</span>
         </div>
       </div>
 
@@ -153,11 +147,15 @@
           <div class="row px-3 py-1">
             <div class="col-1">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="terms_accepted" v-model="validate.validTermAccepted" @change="agreeTerms">
+                <input class="form-check-input"
+                       :class="{'input-error': v$.deliveryMethod.$error}"
+                       type="checkbox" id="terms_accepted"
+                       v-model="validate.validTermAccepted"
+                       @change="agreeTerms">
               </div>
             </div>
             <div class="col-10">Etiam sit amet velit ullamcorper dui finibus ultrices porta at justo</div>
-            <span v-if="v$.validTermAccepted.$error">You have to accept terms </span>
+            <span v-if="v$.validTermAccepted.$error" class="error-message">You have to accept terms </span>
           </div>
           <div class="row px-3 py-1">
             <div class="col-1">
@@ -316,5 +314,12 @@ export default {
 
 <style scoped>
 
+.error-message {
+  color: darkred;
+}
+
+.input-error{
+  box-shadow: 0 0 0 1px darkred;
+}
 
 </style>
