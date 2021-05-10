@@ -17,12 +17,12 @@
           <div class="form-group col-6">
             <label for="firstName">First Name</label>
             <input id="firstName" type="text" class="form-control" v-model="validate.firstName"/>
-            <span v-if="v$.firstName.$error">Value is required </span>
+            <span v-if="v$.firstName.$error">{{ v$.firstName.$errors[0].$message }}</span>
           </div>
           <div class="form-group col-6">
             <label for="lastName">Last Name</label>
             <input id="lastName" type="text" class="form-control" v-model="validate.lastName"/>
-            <span v-if="v$.lastName.$error">Value is required </span>
+            <span v-if="v$.lastName.$error">{{ v$.lastName.$errors[0].$message }}</span>
           </div>
         </div>
 
@@ -36,10 +36,12 @@
             <div class="form-group pt-2">
               <label for="companyName">Company Name</label>
               <input id="companyName" type="text" class="form-control" v-model="validate.companyName" />
+              <span v-if="v$.companyName.$error">Value is required</span>
             </div>
             <div class="form-group">
               <label for="nip">NIP number</label>
               <input id="nip" type="text" class="form-control" v-model="validate.nip"/>
+              <span v-if="v$.nip.$error">Value is required</span>
             </div>
           </div>
         </div>
@@ -180,10 +182,10 @@
 <script>
 import carriers from "../data/delivery";
 import {Store} from "../store/store";
-import { required, email, minLength } from "@vuelidate/validators";
+import {required, email, minLength, requiredIf} from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import { reactive, computed } from "vue";
-import { isTermChecked } from "../data/validators";
+import {isInvoiceChecked, isTermChecked} from "../data/validators";
 
 export default {
   name: "Order",
@@ -222,6 +224,8 @@ export default {
       return {
         firstName: { required, minLength: minLength(3) },
         lastName: { required, minLength: minLength(3) },
+        companyName: { required: requiredIf(isInvoiceChecked)},
+        nip: { required: requiredIf(isInvoiceChecked)},
         email: { required, email },
         street: { required, minLength: minLength(3) },
         streetNumber: { required },
