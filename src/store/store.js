@@ -5,7 +5,11 @@ export const Store = {
         cart: [],
         shippingData: [],
         deliveryMethod: '',
+        deliveryCost: 0,
         totalCost: '',
+        invoice: false,
+        termsAccepted: false,
+        marketingAccepted: false,
     }),
     addToCart(product, addedQuantity=1) {
         const locationInCart = this.state.cart.findIndex(p => {

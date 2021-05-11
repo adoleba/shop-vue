@@ -26,41 +26,42 @@
             <div class="col"><span class="font-weight-bold">Your Shipping Data</span> </div>
           </div>
 
-            <div v-for="entry in shippingData" :key="entry">
-              <div v-if="entry.companyName" class="row px-4 py-1">
-                <div class="col-4">Company Name:</div>
-                <div class="col-8"> {{entry.companyName}}</div>
-              </div>
+          <div v-if="invoice">
+            <div v-if="shippingData['companyName']" class="row px-4 py-1">
+              <div class="col-4">Company Name:</div>
+              <div class="col-8"> {{shippingData['companyName']}}</div>
+            </div>
 
-              <div v-if="entry.nip" class="row px-4 py-1">
-                <div class="col-4">Nip Number:</div>
-                <div class="col-8"> {{entry.nip}}</div>
-              </div>
-
-              <div v-if="entry.firstName" class="row px-4 py-1">
-                <div class="col-4">Name:</div>
-                <div class="col-8"> {{entry.firstName}} {{entry.lastName}}</div>
-              </div>
-
-              <div class="row px-4 py-1">
-                <div class="col-4">Email:</div>
-                <div class="col-8"> {{entry.email}}</div>
-              </div>
-
-              <div class="row px-4 py-1">
-                <div class="col-4">Address:</div>
-                <div class="col-8"> {{entry.street}} {{entry.streetNumber}}
-                  <span v-if="entry.apartmentNumber">/{{entry.apartmentNumber}}</span><br>
-                  {{entry.postalCode}} {{entry.city}}
-                </div>
-              </div>
-
-              <div class="row px-4 py-1">
-                <div class="col-4">Comments:</div>
-                <div class="col-8"> {{entry.comments}}</div>
-              </div>
+            <div v-if="shippingData['nip']" class="row px-4 py-1">
+              <div class="col-4">Nip Number:</div>
+              <div class="col-8"> {{shippingData['nip']}}</div>
+            </div>
 
           </div>
+
+          <div v-if="shippingData['firstName']" class="row px-4 py-1">
+            <div class="col-4">Name:</div>
+            <div class="col-8"> {{shippingData['firstName']}} {{shippingData['lastName']}}</div>
+          </div>
+
+          <div class="row px-4 py-1">
+            <div class="col-4">Email:</div>
+            <div class="col-8"> {{shippingData['email']}}</div>
+          </div>
+
+          <div class="row px-4 py-1">
+            <div class="col-4">Address:</div>
+            <div class="col-8"> {{shippingData['street']}} {{shippingData['streetNumber']}}
+              <span v-if="shippingData['apartmentNumber']">/{{shippingData['apartmentNumber']}}</span><br>
+              {{shippingData['postalCode']}} {{shippingData['city']}}
+            </div>
+          </div>
+
+          <div class="row px-4 py-1">
+            <div class="col-4">Comments:</div>
+            <div class="col-8">{{shippingData['comments']}}</div>
+          </div>
+
 
           <div class="row p-4 justify-content-center">
             <button class="btn btn-success rounded btn-lg">Order and pay</button>
@@ -82,6 +83,7 @@ export default {
       shippingData: Store.state.shippingData,
       totalCost: Store.state.totalCost,
       deliveryMethod: Store.state.deliveryMethod,
+      invoice: Store.state.invoice,
     }
   },
 }

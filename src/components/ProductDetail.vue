@@ -57,7 +57,7 @@ import {useToast} from "vue-toastification";
 
 export default {
   name: "ProductDetail",
-    setup() {
+  setup() {
     const toast = useToast();
       return {toast}
   },
