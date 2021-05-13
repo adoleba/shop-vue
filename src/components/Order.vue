@@ -1,25 +1,18 @@
 <template>
 <div class="container">
 
-  <div class="row py-4">
-    <div class="col-6 px-3">
-      <h6 class="font-weight-bold">Shipping data</h6>
-    </div>
-    <div class="col-5 px-3 offset-1">
-      <h6 class="font-weight-bold">Delivery method</h6>
-    </div>
-  </div>
-
   <div class="row pb-4">
-    <div class="col-6">
-      <div class="p-5 border rounded">
+    <div class=" col-md col-lg-6">
+      <h6 class="font-weight-bold py-4">Shipping data</h6>
+
+      <div class="p-3 p-md-5 border rounded">
         <div class="form-row">
-          <div class="form-group col-6">
+          <div class="form-group col-sm col-md-6">
             <label for="firstName">First Name</label>
             <input id="firstName" type="text" class="form-control" :class="{'input-error': v$.firstName.$error}" v-model="validate.firstName"/>
             <span v-if="v$.firstName.$error" class="error-message">{{ v$.firstName.$errors[0].$message }}</span>
           </div>
-          <div class="form-group col-6">
+          <div class="form-group col-sm col-md-6">
             <label for="lastName">Last Name</label>
             <input id="lastName" type="text" class="form-control" :class="{'input-error': v$.lastName.$error}" v-model="validate.lastName"/>
             <span v-if="v$.lastName.$error" class="error-message">{{ v$.lastName.$errors[0].$message }}</span>
@@ -59,24 +52,24 @@
         </div>
 
         <div class="form-row">
-          <div class="form-group col-6">
-            <label for="streetNumber">Street number</label>
+          <div class="form-group col-sm col-md-6">
+            <label for="streetNumber">Street No.</label>
             <input id="streetNumber" type="text" class="form-control" :class="{'input-error': v$.streetNumber.$error}" v-model="validate.streetNumber"/>
             <span v-if="v$.streetNumber.$error" class="error-message">{{ v$.streetNumber.$errors[0].$message }}</span>
           </div>
-          <div class="form-group col-6">
-            <label for="apartmentNumber">Apartment number</label>
+          <div class="form-group col col-md-6">
+            <label for="apartmentNumber">Apartment No.</label>
             <input id="apartmentNumber" type="text" class="form-control" v-model="shippingData['apartmentNumber']"/>
           </div>
         </div>
 
         <div class="form-row">
-          <div class="form-group col-4">
-            <label for="postalCode">Postal code</label>
+          <div class="form-group col-sm col-sm-4">
+            <label for="postalCode">Zipcode</label>
             <input id="postalCode" type="text" class="form-control" :class="{'input-error': v$.postalCode.$error}" v-model="validate.postalCode"/>
             <span v-if="v$.postalCode.$error" class="error-message">{{ v$.postalCode.$errors[0].$message }}</span>
           </div>
-          <div class="form-group col-8">
+          <div class="form-group col-sm col-sm-8">
             <label for="city">City</label>
             <input id="city" type="text" class="form-control" :class="{'input-error': v$.city.$error}" v-model="validate.city"/>
             <span v-if="v$.city.$error" class="error-message">{{ v$.city.$errors[0].$message }}</span>
@@ -90,7 +83,8 @@
       </div>
     </div>
 
-    <div class="col-5 offset-1">
+    <div class="col-md col-lg-5 offset-lg-1">
+      <h6 class="font-weight-bold py-4">Delivery method</h6>
 
       <div class="border rounded p-3 mb-5">
         <div class="p-4">
