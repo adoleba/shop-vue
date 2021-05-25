@@ -1,7 +1,8 @@
 <template>
   <div class="row">
 
-    <div v-for="product in products" :key="product.id" :products="products" class="col-sm-4 col-xs-12 text-center p-4 p-sm-2 p-lg-5">
+    <div v-for="product in products" :key="product.id" :products="products"
+         class="col-sm-4 col-xs-12 text-center p-4 p-sm-2 p-lg-5">
       <div class="card no-border">
         <img :src="getImgUrl(product.id)" v-bind:alt="product.name" class="card-img-top">
         <div class="card-body">
@@ -27,12 +28,12 @@ export default {
   props: ['categoryName'],
   setup() {
     const toast = useToast();
-      return {toast}
+    return {toast};
   },
   data() {
     return {
       products: products,
-    }
+    };
   },
   created() {
     const categoryName = this.$route.params.categoryName;
@@ -42,16 +43,16 @@ export default {
 
   methods: {
     getImgUrl(id) {
-      return require('../data/images/'+id+'.png')
+      return require('../data/images/' + id + '.png');
     },
-    addToCart(product){
-      Store.addToCart(product)
+    addToCart(product) {
+      Store.addToCart(product);
       this.toast.success("Product was added to cart", {
         timeout: 1500,
       });
     },
   },
-}
+};
 </script>
 
 <style scoped>

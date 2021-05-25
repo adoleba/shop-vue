@@ -7,7 +7,7 @@
       </div>
 
       <div class="col-12 col-md-6 justify-content-center py-5 pl-5">
-        <h1 class="pb-5">{{product.producer}} {{product.name}}</h1>
+        <h1 class="pb-5">{{ product.producer }} {{ product.name }}</h1>
         <div class="row">
           <div class="col"><p><span class="font-weight-bold">Memory: </span>{{ product.memory }}</p></div>
         </div>
@@ -27,7 +27,8 @@
 
         <div class="row pt-3">
           <div class="col">
-            <input type="number" class="col-form-label" style="max-width: 120px;" value="1" min="1" max="10" id="quantity"/>
+            <input type="number" class="col-form-label" style="max-width: 120px;" value="1" min="1" max="10"
+                   id="quantity"/>
           </div>
         </div>
         <div class="row pb-5 pt-3">
@@ -56,22 +57,22 @@ export default {
   name: "ProductDetail",
   setup() {
     const toast = useToast();
-      return {toast}
+    return {toast};
   },
   data() {
     return {
       products: products,
-    }
+    };
   },
   methods: {
     getImgUrl(id) {
-      return require('../data/images/'+id+'.png')
+      return require('../data/images/' + id + '.png');
     },
-    getQuantity(){
-      return document.querySelector("input[id=quantity]").value
+    getQuantity() {
+      return document.querySelector("input[id=quantity]").value;
     },
-    addToCart(product){
-      Store.addToCart(product, this.getQuantity())
+    addToCart(product) {
+      Store.addToCart(product, this.getQuantity());
       this.toast.success("Product was added to cart", {
         timeout: 1500,
       });
@@ -81,8 +82,8 @@ export default {
     const ID = Number(this.$route.params.id);
     const product = this.products.find(product => product.id === ID);
     this.product = product;
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

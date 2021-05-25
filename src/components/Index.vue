@@ -11,12 +11,26 @@
     </div>
 
     <div class="row justify-content-center navbar navbar-expand-lg navbar-light">
-        <ul class="navbar-nav">
-          <li><router-link :to="{ name: 'home' }" class="nav-item nav-link">All</router-link></li>
-          <li><router-link :to="{ name: 'category', params: {categoryName: 'ultrabook'}}" class="nav-item active nav-link">Ultrabooks</router-link></li>
-          <li><router-link :to="{ name: 'category', params: {categoryName: 'laptop'}}" class="nav-item active nav-link">Laptops</router-link></li>
-          <li><router-link :to="{ name: 'category', params: {categoryName: '2in1'} }" class="nav-item active nav-link">2 in 1</router-link></li>
-        </ul>
+      <ul class="navbar-nav">
+        <li>
+          <router-link :to="{ name: 'home' }" class="nav-item nav-link">All</router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'category', params: {categoryName: 'ultrabook'}}" class="nav-item active nav-link">
+            Ultrabooks
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'category', params: {categoryName: 'laptop'}}" class="nav-item active nav-link">
+            Laptops
+          </router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'category', params: {categoryName: '2in1'} }" class="nav-item active nav-link">2 in
+            1
+          </router-link>
+        </li>
+      </ul>
     </div>
 
     <hr>
@@ -28,8 +42,8 @@
 
 <script>
 export default {
-  name: "Index"
-}
+  name: "Index",
+};
 </script>
 
 <style scoped>
