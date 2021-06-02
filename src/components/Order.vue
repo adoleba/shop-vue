@@ -112,9 +112,7 @@
               </div>
               <div class="col-5">{{ carrier.price.toLocaleString().replace('.', ',') }} zł</div>
             </div>
-            <span v-if="v$.deliveryMethod.$error" class="error-message">{{
-                v$.deliveryMethod.$errors[0].$message
-              }}</span>
+            <span v-if="v$.deliveryMethod.$error" class="error-message">{{v$.deliveryMethod.$errors[0].$message }}</span>
           </div>
         </div>
 
@@ -195,7 +193,7 @@ import {Store} from "../store/store";
 import {required, email, minLength, requiredIf} from "@vuelidate/validators";
 import {useVuelidate} from "@vuelidate/core";
 import {reactive, computed} from "vue";
-import {isInvoiceChecked, isTermChecked} from "../data/validators";
+import {isTermChecked} from "../data/validators";
 
 export default {
   name: "Order",
@@ -220,6 +218,7 @@ export default {
     const validate = reactive({
       firstName: Store.state.shippingData['firstName'] === undefined ? '' : Store.state.shippingData['firstName'],
       lastName: Store.state.shippingData['lastName'] === undefined ? '' : Store.state.shippingData['lastName'],
+      invoice: Store.state.invoice,
       companyName: Store.state.shippingData['companyName'] === undefined ? '' : Store.state.shippingData['companyName'],
       nip: Store.state.shippingData['nip'] === undefined ? '' : Store.state.shippingData['nip'],
       email: Store.state.shippingData['email'] === undefined ? '' : Store.state.shippingData['email'],
@@ -228,15 +227,15 @@ export default {
       postalCode: Store.state.shippingData['postalCode'] === undefined ? '' : Store.state.shippingData['postalCode'],
       city: Store.state.shippingData['city'] === undefined ? '' : Store.state.shippingData['city'],
       deliveryMethod: Store.state.deliveryMethod === undefined ? '' : Store.state.deliveryMethod,
-      validTermAccepted: document.querySelector("input[id=terms_accepted]") === null ? Store.state.termsAccepted : this.termsAccepted,
+      validTermAccepted: Store.state.termsAccepted,
     });
 
     const rules = computed(() => {
       return {
         firstName: {required, minLength: minLength(3)},
         lastName: {required, minLength: minLength(3)},
-        companyName: {required: requiredIf(isInvoiceChecked)},
-        nip: {required: requiredIf(isInvoiceChecked)},
+        companyName: {required: requiredIf(validate.invoice)},
+        nip: {required: requiredIf(validate.invoice)},
         email: {required, email},
         street: {required, minLength: minLength(3)},
         streetNumber: {required},
@@ -262,7 +261,6 @@ export default {
       Store.state.termsAccepted = agreedTerms;
       this.termsAccepted = agreedTerms;
     },
-
     agreeMarketing(event) {
       Store.state.marketingAccepted = event.target.checked;
     },
@@ -293,14 +291,15 @@ export default {
 
     invoiceForm() {
       const companyData = document.getElementById('companyData');
+      const chosenInvoice = event.target.checked;
 
-      if (document.getElementById('invoice').checked) {
+      if (chosenInvoice) {
         companyData.style.display = 'block';
-        Store.state.invoice = true;
       } else {
         companyData.style.display = 'none';
-        Store.state.invoice = false;
       }
+      Store.state.invoice = chosenInvoice;
+      this.invoice = chosenInvoice;
     },
 
     displayInvoiceData: function () {
