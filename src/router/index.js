@@ -48,7 +48,7 @@ const routes = [
     name: "orderConfirm",
     component: OrderConfirm,
   }, {
-    path: "/products/:id",
+    path: "/products/:product",
     name: "productDetail",
     component: ProductDetail,
     props: true,

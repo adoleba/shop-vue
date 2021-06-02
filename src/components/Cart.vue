@@ -20,13 +20,12 @@
             </div>
             <div class="col-6 align-self-center">
               <span class="font-weight-bold">Product: </span><br/>
-              <router-link class="card-text" :to="{ name: 'productDetail' , params: {id: product.details.id}}">
+              <router-link class="card-text" :to="{ name: 'productDetail' ,
+                 params: {product: slugify(product.details.producer+'-'+product.details.name), id: product.details.id}}">
                 {{ product.details.producer }} {{ product.details.name }}
               </router-link>
               <div class="align-self-center">
-                <span class="font-weight-bold">Unity price: </span><br/>{{
-                  product.details.price.toLocaleString().replace(',', ' ')
-                }} zł
+                <span class="font-weight-bold">Unity price: </span><br/>{{ product.details.price.toLocaleString().replace(',', ' ') }} zł
               </div>
               <div class="align-self-center py-2"><span class="font-weight-bold">Quantity: </span></div>
               <div class="row">
@@ -41,9 +40,7 @@
                 </div>
               </div>
               <div class="align-self-center">
-                <span class="font-weight-bold">Value: </span><br/>{{
-                  (product.details.price * product.quantity).toLocaleString().replace(',', ' ')
-                }} zł
+                <span class="font-weight-bold">Value: </span><br/>{{ (product.details.price * product.quantity).toLocaleString().replace(',', ' ') }} zł
               </div>
             </div>
           </div>
@@ -52,7 +49,8 @@
         <div class="col-2 align-self-center d-none d-md-block"><img :src="getImgUrl(product.details.id)"
                                                                     v-bind:alt="product.name"/></div>
         <div class="col-3 align-self-center d-none d-md-block">
-          <router-link class="card-text" :to="{ name: 'productDetail' , params: {id: product.details.id}}">
+          <router-link class="card-text" :to="{ name: 'productDetail' ,
+            params: {product: slugify(product.details.producer+'-'+product.details.name),id: product.details.id}}">
             {{ product.details.producer }} {{ product.details.name }}
           </router-link>
         </div>
@@ -122,8 +120,10 @@ export default {
     return {toast};
   },
   data() {
+    const slugify = require('slugify');
     return {
       cart: Store.state,
+      slugify,
     };
   },
   methods: {
