@@ -40,8 +40,7 @@ export default {
   },
   created() {
     const categoryName = this.$route.params.categoryName;
-    const products = this.products.filter(product => product.category === categoryName);
-    this.products = products;
+    this.products = this.products.filter(product => product.category === categoryName);
   },
 
   methods: {

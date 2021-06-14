@@ -46,8 +46,9 @@
           </div>
         </div>
 
-        <div class="col-2 align-self-center d-none d-md-block"><img :src="getImgUrl(product.details.id)"
-                                                                    v-bind:alt="product.name"/></div>
+        <div class="col-2 align-self-center d-none d-md-block">
+          <img :src="getImgUrl(product.details.id)" v-bind:alt="product.name"/>
+        </div>
         <div class="col-3 align-self-center d-none d-md-block">
           <router-link class="card-text" :to="{ name: 'productDetail' ,
             params: {product: slugify(product.details.producer+'-'+product.details.name),id: product.details.id}}">

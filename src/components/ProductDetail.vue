@@ -80,8 +80,7 @@ export default {
   },
   created() {
     const ID = Number(this.$route.params.id);
-    const product = this.products.find(product => product.id === ID);
-    this.product = product;
+    this.product = this.products.find(product => product.id === ID);
   },
 };
 </script>
