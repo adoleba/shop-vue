@@ -1,6 +1,7 @@
 <template>
   <div class="row">
-    <div v-for="product in products" :product="product" :key="product.id"
+
+    <div v-for="product in products" :key="product.id" :products="products"
          class="col-sm-4 col-xs-12 text-center p-4 p-sm-2 p-lg-5">
       <div class="card no-border">
         <img :src="getImgUrl(product.id)" v-bind:alt="product.name" class="card-img-top">
@@ -19,23 +20,29 @@
 </template>
 
 <script>
+import {useToast} from "vue-toastification";
 import products from "../data/products";
 import {Store} from "../store/store";
-import {useToast} from "vue-toastification";
 
 export default {
-  name: 'HomePage',
+  name: "CategoryProducts",
+  props: ['categoryName'],
   setup() {
     const toast = useToast();
     return {toast};
   },
   data() {
-  const slugify = require('slugify');
+    const slugify = require('slugify');
     return {
-      products,
+      products: products,
       slugify,
     };
   },
+  created() {
+    const categoryName = this.$route.params.categoryName;
+    this.products = this.products.filter(product => product.category === categoryName);
+  },
+
   methods: {
     getImgUrl(id) {
       return require('../data/images/' + id + '.png');
@@ -47,9 +54,7 @@ export default {
       });
     },
   },
-
 };
-
 </script>
 
 <style scoped>
@@ -57,4 +62,5 @@ export default {
 .no-border {
   border: none;
 }
+
 </style>
