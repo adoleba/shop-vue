@@ -8,14 +8,14 @@
         <div class="p-3 p-md-5 border rounded">
           <div class="form-row">
             <div class="form-group col-sm col-md-6">
-              <label for="firstName">First Name</label>
-              <input id="firstName" type="text" class="form-control" :class="{'input-error': v$.firstName.$error}"
+              <label>First Name</label>
+              <input ref="firstName" type="text" class="form-control" :class="{'input-error': v$.firstName.$error}"
                      v-model="validate.firstName"/>
               <span v-if="v$.firstName.$error" class="error-message">{{ v$.firstName.$errors[0].$message }}</span>
             </div>
             <div class="form-group col-sm col-md-6">
-              <label for="lastName">Last Name</label>
-              <input id="lastName" type="text" class="form-control" :class="{'input-error': v$.lastName.$error}"
+              <label>Last Name</label>
+              <input ref="lastName" type="text" class="form-control" :class="{'input-error': v$.lastName.$error}"
                      v-model="validate.lastName"/>
               <span v-if="v$.lastName.$error" class="error-message">{{ v$.lastName.$errors[0].$message }}</span>
             </div>
@@ -23,20 +23,20 @@
 
           <div class="form-group">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="invoice" v-model='invoice' @change="invoiceForm">
+              <input class="form-check-input" type="checkbox" ref="invoice" id="invoice" v-model='invoice' @change="invoiceForm">
               <div>I need an invoice</div>
             </div>
 
             <div id="companyData" style="display: none">
               <div class="form-group pt-2">
-                <label for="companyName">Company Name</label>
-                <input id="companyName" type="text" class="form-control" :class="{'input-error': v$.companyName.$error}"
+                <label>Company Name</label>
+                <input ref="companyName" type="text" class="form-control" :class="{'input-error': v$.companyName.$error}"
                        v-model="validate.companyName"/>
                 <span v-if="v$.companyName.$error" class="error-message">Value is required</span>
               </div>
               <div class="form-group">
-                <label for="nip">NIP number</label>
-                <input id="nip" type="text" class="form-control" :class="{'input-error': v$.nip.$error}"
+                <label>NIP number</label>
+                <input ref="nip" type="text" class="form-control" :class="{'input-error': v$.nip.$error}"
                        v-model="validate.nip"/>
                 <span v-if="v$.nip.$error" class="error-message">Value is required</span>
               </div>
@@ -44,50 +44,50 @@
           </div>
 
           <div class="form-group">
-            <label for="email">Email</label>
-            <input id="email" type="text" class="form-control" :class="{'input-error': v$.email.$error}"
+            <label>Email</label>
+            <input ref="email" type="text" class="form-control" :class="{'input-error': v$.email.$error}"
                    v-model="validate.email"/>
             <span v-if="v$.email.$error" class="error-message">{{ v$.email.$errors[0].$message }}</span>
           </div>
 
           <div class="form-group">
-            <label for="street">Street</label>
-            <input id="street" type="text" class="form-control" :class="{'input-error': v$.street.$error}"
+            <label>Street</label>
+            <input ref="street" type="text" class="form-control" :class="{'input-error': v$.street.$error}"
                    v-model="validate.street"/>
             <span v-if="v$.street.$error" class="error-message">{{ v$.street.$errors[0].$message }}</span>
           </div>
 
           <div class="form-row">
             <div class="form-group col-sm col-md-6">
-              <label for="streetNumber">Street No.</label>
-              <input id="streetNumber" type="text" class="form-control" :class="{'input-error': v$.streetNumber.$error}"
+              <label>Street No.</label>
+              <input ref="streetNumber" type="text" class="form-control" :class="{'input-error': v$.streetNumber.$error}"
                      v-model="validate.streetNumber"/>
               <span v-if="v$.streetNumber.$error" class="error-message">{{ v$.streetNumber.$errors[0].$message }}</span>
             </div>
             <div class="form-group col col-md-6">
-              <label for="apartmentNumber">Apartment No.</label>
-              <input id="apartmentNumber" type="text" class="form-control" v-model="shippingData['apartmentNumber']"/>
+              <label>Apartment No.</label>
+              <input ref="apartmentNumber" type="text" class="form-control" v-model="shippingData['apartmentNumber']"/>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group col-sm col-sm-4">
-              <label for="postalCode">Zipcode</label>
-              <input id="postalCode" type="text" class="form-control" :class="{'input-error': v$.postalCode.$error}"
+              <label>Zipcode</label>
+              <input ref="postalCode" type="text" class="form-control" :class="{'input-error': v$.postalCode.$error}"
                      v-model="validate.postalCode"/>
               <span v-if="v$.postalCode.$error" class="error-message">{{ v$.postalCode.$errors[0].$message }}</span>
             </div>
             <div class="form-group col-sm col-sm-8">
-              <label for="city">City</label>
-              <input id="city" type="text" class="form-control" :class="{'input-error': v$.city.$error}"
+              <label>City</label>
+              <input ref="city" type="text" class="form-control" :class="{'input-error': v$.city.$error}"
                      v-model="validate.city"/>
               <span v-if="v$.city.$error" class="error-message">{{ v$.city.$errors[0].$message }}</span>
             </div>
           </div>
 
           <div class="form-group">
-            <label for="comments">Comments</label>
-            <textarea id="comments" class="form-control" v-model="shippingData['comments']"/>
+            <label>Comments</label>
+            <textarea ref="comments" class="form-control" v-model="shippingData['comments']"/>
           </div>
         </div>
       </div>
@@ -229,7 +229,7 @@ export default {
       deliveryMethod: Store.state.deliveryMethod === undefined ? '' : Store.state.deliveryMethod,
       validTermAccepted: Store.state.termsAccepted,
     });
-
+    console.log(validate.invoice)
     const rules = computed(() => {
       return {
         firstName: {required, minLength: minLength(3)},
@@ -270,18 +270,18 @@ export default {
 
       if (!this.v$.$error) {
         const values = {
-          'companyName': document.querySelector("input[id=companyName]").value,
-          'nip': document.querySelector("input[id=nip]").value,
-          'firstName': document.querySelector("input[id=firstName]").value,
-          'lastName': document.querySelector("input[id=lastName]").value,
-          'invoice': document.querySelector("input[id=invoice]").checked,
-          'email': document.querySelector("input[id=email]").value,
-          'street': document.querySelector("input[id=street]").value,
-          'streetNumber': document.querySelector("input[id=streetNumber]").value,
-          'apartmentNumber': document.querySelector("input[id=apartmentNumber]").value,
-          'postalCode': document.querySelector("input[id=postalCode]").value,
-          'city': document.querySelector("input[id=city]").value,
-          'comments': document.querySelector("textarea[id=comments]").value,
+          'companyName': this.$refs.companyName.value,
+          'nip': this.$refs.nip.value,
+          'firstName': this.$refs.firstName.value,
+          'lastName': this.$refs.lastName.value,
+          'invoice': this.$refs.invoice.checked,
+          'email': this.$refs.email.value,
+          'street': this.$refs.street.value,
+          'streetNumber': this.$refs.streetNumber.value,
+          'apartmentNumber': this.$refs.apartmentNumber.value,
+          'postalCode': this.$refs.postalCode.value,
+          'city': this.$refs.city.value,
+          'comments': this.$refs.comments.value,
         };
         Object.assign(Store.state.shippingData, values);
         this.$router.push({name: 'orderConfirm'});
