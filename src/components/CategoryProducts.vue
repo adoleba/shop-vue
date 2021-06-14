@@ -6,7 +6,8 @@
       <div class="card no-border">
         <img :src="getImgUrl(product.id)" v-bind:alt="product.name" class="card-img-top">
         <div class="card-body">
-          <router-link class="card-text" :to="{ name: 'productDetail' , params: {id: product.id}}">
+          <router-link class="card-text" :to="{ name: 'productDetail' , params:
+            {product: slugify(product.producer+'-'+product.name), id: product.id}}">
             {{ product.producer }} {{ product.name }}
           </router-link>
           <h5 class="card-title font-weight-bold">{{ product.price.toLocaleString().replace(',', ' ') }} zł</h5>
@@ -31,8 +32,10 @@ export default {
     return {toast};
   },
   data() {
+    const slugify = require('slugify');
     return {
       products: products,
+      slugify,
     };
   },
   created() {
