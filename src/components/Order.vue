@@ -193,7 +193,7 @@ import {Store} from "../store/store";
 import {required, email, minLength, requiredIf} from "@vuelidate/validators";
 import {useVuelidate} from "@vuelidate/core";
 import {reactive, computed} from "vue";
-import {isTermChecked} from "../data/validators";
+import {isInvoiceChecked, isTermChecked} from "../data/validators";
 
 export default {
   name: "Order",
@@ -229,13 +229,13 @@ export default {
       deliveryMethod: Store.state.deliveryMethod === undefined ? '' : Store.state.deliveryMethod,
       validTermAccepted: Store.state.termsAccepted,
     });
-    console.log(validate.invoice)
+
     const rules = computed(() => {
       return {
         firstName: {required, minLength: minLength(3)},
         lastName: {required, minLength: minLength(3)},
-        companyName: {required: requiredIf(validate.invoice)},
-        nip: {required: requiredIf(validate.invoice)},
+        companyName: {required: requiredIf(isInvoiceChecked)},
+        nip: {required: requiredIf(isInvoiceChecked)},
         email: {required, email},
         street: {required, minLength: minLength(3)},
         streetNumber: {required},
