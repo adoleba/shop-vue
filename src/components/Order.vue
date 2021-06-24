@@ -216,17 +216,17 @@ export default {
   },
   setup() {
     const validate = reactive({
-      firstName: Store.state.shippingData['firstName'] === undefined ? '' : Store.state.shippingData['firstName'],
-      lastName: Store.state.shippingData['lastName'] === undefined ? '' : Store.state.shippingData['lastName'],
+      firstName: Store.state.shippingData['firstName'] || '',
+      lastName: Store.state.shippingData['lastName'] || '',
       invoice: Store.state.invoice,
-      companyName: Store.state.shippingData['companyName'] === undefined ? '' : Store.state.shippingData['companyName'],
-      nip: Store.state.shippingData['nip'] === undefined ? '' : Store.state.shippingData['nip'],
-      email: Store.state.shippingData['email'] === undefined ? '' : Store.state.shippingData['email'],
-      street: Store.state.shippingData['street'] === undefined ? '' : Store.state.shippingData['street'],
-      streetNumber: Store.state.shippingData['streetNumber'] === undefined ? '' : Store.state.shippingData['streetNumber'],
-      postalCode: Store.state.shippingData['postalCode'] === undefined ? '' : Store.state.shippingData['postalCode'],
-      city: Store.state.shippingData['city'] === undefined ? '' : Store.state.shippingData['city'],
-      deliveryMethod: Store.state.deliveryMethod === undefined ? '' : Store.state.deliveryMethod,
+      companyName: Store.state.shippingData['companyName'] || '',
+      nip: Store.state.shippingData['nip'] || '',
+      email: Store.state.shippingData['email'] || '',
+      street: Store.state.shippingData['street']  || '',
+      streetNumber: Store.state.shippingData['streetNumber'] || '',
+      postalCode: Store.state.shippingData['postalCode'] || '',
+      city: Store.state.shippingData['city'] || '',
+      deliveryMethod: Store.state.deliveryMethod || '',
       validTermAccepted: Store.state.termsAccepted,
     });
 
