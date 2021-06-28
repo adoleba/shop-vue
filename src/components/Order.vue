@@ -10,13 +10,13 @@
             <div class="form-group col-sm col-md-6">
               <label>First Name</label>
               <input ref="firstName" type="text" class="form-control" :class="{'input-error': v$.firstName.$error}"
-                     v-model="validate.firstName"/>
+                     v-model="firstName"/>
               <span v-if="v$.firstName.$error" class="error-message">{{ v$.firstName.$errors[0].$message }}</span>
             </div>
             <div class="form-group col-sm col-md-6">
               <label>Last Name</label>
               <input ref="lastName" type="text" class="form-control" :class="{'input-error': v$.lastName.$error}"
-                     v-model="validate.lastName"/>
+                     v-model="lastName"/>
               <span v-if="v$.lastName.$error" class="error-message">{{ v$.lastName.$errors[0].$message }}</span>
             </div>
           </div>
@@ -31,13 +31,13 @@
               <div class="form-group pt-2">
                 <label>Company Name</label>
                 <input ref="companyName" type="text" class="form-control" :class="{'input-error': v$.companyName.$error}"
-                       v-model="validate.companyName"/>
+                       v-model="companyName"/>
                 <span v-if="v$.companyName.$error" class="error-message">Value is required</span>
               </div>
               <div class="form-group">
                 <label>NIP number</label>
                 <input ref="nip" type="text" class="form-control" :class="{'input-error': v$.nip.$error}"
-                       v-model="validate.nip"/>
+                       v-model="nip"/>
                 <span v-if="v$.nip.$error" class="error-message">Value is required</span>
               </div>
             </div>
@@ -46,14 +46,14 @@
           <div class="form-group">
             <label>Email</label>
             <input ref="email" type="text" class="form-control" :class="{'input-error': v$.email.$error}"
-                   v-model="validate.email"/>
+                   v-model="email"/>
             <span v-if="v$.email.$error" class="error-message">{{ v$.email.$errors[0].$message }}</span>
           </div>
 
           <div class="form-group">
             <label>Street</label>
             <input ref="street" type="text" class="form-control" :class="{'input-error': v$.street.$error}"
-                   v-model="validate.street"/>
+                   v-model="street"/>
             <span v-if="v$.street.$error" class="error-message">{{ v$.street.$errors[0].$message }}</span>
           </div>
 
@@ -61,7 +61,7 @@
             <div class="form-group col-sm col-md-6">
               <label>Street No.</label>
               <input ref="streetNumber" type="text" class="form-control" :class="{'input-error': v$.streetNumber.$error}"
-                     v-model="validate.streetNumber"/>
+                     v-model="streetNumber"/>
               <span v-if="v$.streetNumber.$error" class="error-message">{{ v$.streetNumber.$errors[0].$message }}</span>
             </div>
             <div class="form-group col col-md-6">
@@ -74,13 +74,13 @@
             <div class="form-group col-sm col-sm-4">
               <label>Zipcode</label>
               <input ref="postalCode" type="text" class="form-control" :class="{'input-error': v$.postalCode.$error}"
-                     v-model="validate.postalCode"/>
+                     v-model="postalCode"/>
               <span v-if="v$.postalCode.$error" class="error-message">{{ v$.postalCode.$errors[0].$message }}</span>
             </div>
             <div class="form-group col-sm col-sm-8">
               <label>City</label>
               <input ref="city" type="text" class="form-control" :class="{'input-error': v$.city.$error}"
-                     v-model="validate.city"/>
+                     v-model="city"/>
               <span v-if="v$.city.$error" class="error-message">{{ v$.city.$errors[0].$message }}</span>
             </div>
           </div>
@@ -105,7 +105,7 @@
                        name='delivery'
                        :id="carrier.name"
                        v-bind:value='carrier.name'
-                       v-model='validate.deliveryMethod'
+                       v-model='deliveryMethod'
                        @change="addDeliveryCost"
                 >
                 <label class="form-check-label" v-bind:for="carrier.name">{{ carrier.name }}</label>
@@ -159,7 +159,7 @@
                   <input class="form-check-input"
                          :class="{'input-error': v$.validTermAccepted.$error}"
                          type="checkbox" id="terms_accepted"
-                         v-model="validate.validTermAccepted"
+                         v-model="validTermAccepted"
                          @change="agreeTerms">
                 </div>
               </div>
@@ -192,11 +192,16 @@ import carriers from "../data/delivery";
 import {Store} from "../store/store";
 import {required, email, minLength, requiredIf} from "@vuelidate/validators";
 import {useVuelidate} from "@vuelidate/core";
-import {reactive, computed} from "vue";
-import {isInvoiceChecked, isTermChecked} from "../data/validators";
+import {isTermChecked} from "../data/validators";
 
 export default {
   name: "Order",
+
+  setup () {
+    return {
+      v$: useVuelidate()
+    }
+  },
 
   mounted() {
     this.displayInvoiceData();
@@ -212,13 +217,8 @@ export default {
       shippingData: Store.state.shippingData,
       termsAccepted: Store.state.termsAccepted,
       marketingAccepted: Store.state.marketingAccepted,
-    };
-  },
-  setup() {
-    const validate = reactive({
       firstName: Store.state.shippingData['firstName'] || '',
       lastName: Store.state.shippingData['lastName'] || '',
-      invoice: Store.state.invoice,
       companyName: Store.state.shippingData['companyName'] || '',
       nip: Store.state.shippingData['nip'] || '',
       email: Store.state.shippingData['email'] || '',
@@ -226,28 +226,26 @@ export default {
       streetNumber: Store.state.shippingData['streetNumber'] || '',
       postalCode: Store.state.shippingData['postalCode'] || '',
       city: Store.state.shippingData['city'] || '',
-      deliveryMethod: Store.state.deliveryMethod || '',
       validTermAccepted: Store.state.termsAccepted,
-    });
-
-    const rules = computed(() => {
-      return {
-        firstName: {required, minLength: minLength(3)},
-        lastName: {required, minLength: minLength(3)},
-        companyName: {required: requiredIf(isInvoiceChecked)},
-        nip: {required: requiredIf(isInvoiceChecked)},
-        email: {required, email},
-        street: {required, minLength: minLength(3)},
-        streetNumber: {required},
-        postalCode: {required, minLength: minLength(5)},
-        city: {required, minLength: minLength(3)},
-        deliveryMethod: {required},
-        validTermAccepted: {isTermChecked},
-      };
-    });
-    const v$ = useVuelidate(rules, validate);
-    return {validate, v$};
+    };
   },
+
+  validations () {
+    return {
+      firstName: {required, minLength: minLength(3)},
+      lastName: {required, minLength: minLength(3)},
+      companyName: {required: requiredIf(() => { return this.invoice})},
+      nip: {required: requiredIf(() => { return this.invoice} )},
+      email: {required, email},
+      street: {required, minLength: minLength(3)},
+      streetNumber: {required},
+      postalCode: {required, minLength: minLength(5)},
+      city: {required, minLength: minLength(3)},
+      deliveryMethod: {required},
+      validTermAccepted: {isTermChecked},
+    }
+  },
+
   methods: {
     addDeliveryCost(event) {
       const deliveryKind = event.target.value;
@@ -266,9 +264,10 @@ export default {
     },
 
     saveShippingValues() {
-      this.v$.$validate();
+      this.v$.$touch()
 
-      if (!this.v$.$error) {
+      if (this.v$.$error) return
+
         const values = {
           'companyName': this.$refs.companyName.value,
           'nip': this.$refs.nip.value,
@@ -286,7 +285,6 @@ export default {
         Object.assign(Store.state.shippingData, values);
         this.$router.push({name: 'orderConfirm'});
 
-      }
     },
 
     invoiceForm() {
