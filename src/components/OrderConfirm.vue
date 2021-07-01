@@ -66,7 +66,7 @@
 
 
         <div class="row p-4 justify-content-center">
-          <button class="btn btn-success rounded btn-lg">Order and pay</button>
+          <button class="btn btn-success rounded btn-lg" v-on:click="clearCart()">Order and pay</button>
         </div>
 
       </div>
@@ -87,6 +87,12 @@ export default {
       deliveryMethod: Store.state.deliveryMethod,
       invoice: Store.state.invoice,
     };
+  },
+  methods: {
+    clearCart() {
+      Store.clearCart();
+      this.$router.push({name: 'home'});
+    },
   },
 };
 </script>

@@ -30,7 +30,19 @@ export const Store = {
         })
         this.state.cart.splice(locationInCart, 1)
     },
-    increaseQuantity(id) {
+    clearCart() {
+        Store.state = reactive({
+            cart: [],
+            shippingData: [],
+            deliveryMethod: '',
+            deliveryCost: 0,
+            totalCost: '',
+            invoice: false,
+            termsAccepted: false,
+            marketingAccepted: false,
+      });
+    },
+        increaseQuantity(id) {
         const locationInCart = this.state.cart.findIndex(p => {
             return p.details.id === id
         })
