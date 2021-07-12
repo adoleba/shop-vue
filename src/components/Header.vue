@@ -19,9 +19,7 @@ export default {
   name: "Header",
   computed: {
     totalCartQuantity() {
-      return Store.state.cart.reduce((accum, product) => {
-        return accum + product.quantity;
-      }, 0);
+      return Store.totalCartQuantity()
     },
   },
 };

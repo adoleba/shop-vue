@@ -31,7 +31,11 @@ export const Store = {
         this.state.cart.splice(locationInCart, 1)
     },
     clearCart() {
-        Store.state = reactive({
+        this.state.cart.push({
+                details: [],
+                quantity: 0
+            });
+        this.state = reactive({
             cart: [],
             shippingData: [],
             deliveryMethod: '',
@@ -42,7 +46,7 @@ export const Store = {
             marketingAccepted: false,
       });
     },
-        increaseQuantity(id) {
+    increaseQuantity(id) {
         const locationInCart = this.state.cart.findIndex(p => {
             return p.details.id === id
         })
@@ -62,5 +66,10 @@ export const Store = {
       return Store.state.cart.reduce((accum, product) => {
             return accum + product.details.price * product.quantity
         }, 0)
+    },
+    totalCartQuantity() {
+      return Store.state.cart.reduce((accum, product) => {
+        return accum + product.quantity;
+      }, 0);
     },
 }
