@@ -425,3 +425,5 @@ test/
 pyvenv.cfg
 pip-selfcheck.json
 
+.db
+
