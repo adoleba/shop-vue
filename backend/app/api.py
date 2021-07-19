@@ -1,7 +1,6 @@
 from typing import List
 
-from fastapi import FastAPI, Depends, HTTPException
-from fastapi.encoders import jsonable_encoder
+from fastapi import FastAPI, Depends, HTTPException, Form
 
 from . import crud, database, models, schemas
 from .database import db_state_default
@@ -29,12 +28,21 @@ def get_db(db_state=Depends(reset_db_state)):
 
 @app.post(
     "/products/",
-    response_model=schemas.Product,
     dependencies=[Depends(get_db)],
     tags=["products"],
     summary="Add a new product"
 )
-def create_product(product: schemas.Product):
+def create_product(producer: str = Form(..., min_length=2),
+                   name: str = Form(..., min_length=2),
+                   description: str = Form(..., min_length=20),
+                   category: str = Form(..., min_length=3),
+                   memory: str = Form(..., min_length=2),
+                   screen: str = Form(..., min_length=2),
+                   price: int = Form(..., gt=0),
+                   processor: str = Form(..., min_length=2),
+                   disk: str = Form(..., min_length=2)):
+    product = {'producer': producer, 'name': name, 'description': description, 'category': category, 'memory': memory,
+               'screen': screen, 'price': price, 'processor': processor, 'disk': disk}
     return crud.create_product(product=product)
 
 

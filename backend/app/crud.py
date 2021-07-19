@@ -5,18 +5,17 @@ def get_products(skip: int = 0, limit: int = 100):
     return list(models.Product.select().offset(skip).limit(limit))
 
 
-def create_product(product: schemas.Product):
+def create_product(product):
     db_product = models.Product(
-        producer=product.producer,
-        name=product.name,
-        description=product.description,
-        category=product.category,
-        memory=product.memory,
-        screen=product.screen,
-        price=product.price,
-        processor=product.processor,
-        disk=product.disk,
-        onStock=product.onStock
+        producer=product['producer'],
+        name=product['name'],
+        description=product['description'],
+        category=product['category'],
+        memory=product['memory'],
+        screen=product['screen'],
+        price=product['price'],
+        processor=product['processor'],
+        disk=product['disk'],
     )
     db_product.save()
     return db_product
