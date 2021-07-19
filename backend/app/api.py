@@ -40,9 +40,10 @@ def create_product(producer: str = Form(..., min_length=2),
                    screen: str = Form(..., min_length=2),
                    price: int = Form(..., gt=0),
                    processor: str = Form(..., min_length=2),
-                   disk: str = Form(..., min_length=2)):
+                   disk: str = Form(..., min_length=2),
+                   on_stock: bool = Form('true')):
     product = {'producer': producer, 'name': name, 'description': description, 'category': category, 'memory': memory,
-               'screen': screen, 'price': price, 'processor': processor, 'disk': disk}
+               'screen': screen, 'price': price, 'processor': processor, 'disk': disk, 'on_stock': on_stock}
     return crud.create_product(product=product)
 
 
@@ -60,13 +61,23 @@ def read_products():
 
 @app.put(
     "/products/{product_id}",
-    response_model=schemas.Product,
     dependencies=[Depends(get_db)],
     tags=["products"],
     summary="Update existing product"
 )
-def update_product(product_id: int, product_data: schemas.Product):
-    updated_product = crud.update_product(product_id, product_data)
+def update_product(product_id: int, producer: str = Form(..., min_length=2),
+                   name: str = Form(..., min_length=2),
+                   description: str = Form(..., min_length=20),
+                   category: str = Form(..., min_length=3),
+                   memory: str = Form(..., min_length=2),
+                   screen: str = Form(..., min_length=2),
+                   price: int = Form(..., gt=0),
+                   processor: str = Form(..., min_length=2),
+                   disk: str = Form(..., min_length=2),
+                   on_stock: bool = Form('true')):
+    product_data = {'producer': producer, 'name': name, 'description': description, 'category': category, 'memory': memory,
+                    'screen': screen, 'price': price, 'processor': processor, 'disk': disk, 'on_stock': on_stock}
+    updated_product = crud.update_product(product_id, product_data=product_data)
     return updated_product
 
 

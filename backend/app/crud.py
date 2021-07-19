@@ -16,23 +16,24 @@ def create_product(product):
         price=product['price'],
         processor=product['processor'],
         disk=product['disk'],
+        on_stock=product['on_stock']
     )
     db_product.save()
     return db_product
 
 
-def update_product(product_id: int, product_data: schemas.Product):
+def update_product(product_id: int, product_data):
     product = models.Product.filter(models.Product.id == product_id).first()
-    product.producer = product_data.producer
-    product.name = product_data.name
-    product.description = product_data.description
-    product.category = product_data.category
-    product.memory = product_data.memory
-    product.screen = product_data.screen
-    product.price = product_data.price
-    product.processor = product_data.processor
-    product.disk = product_data.disk
-    product.onStock = product_data.onStock
+    product.producer = product_data['producer']
+    product.name = product_data['name']
+    product.description = product_data['description']
+    product.category = product_data['category']
+    product.memory = product_data['memory']
+    product.screen = product_data['screen']
+    product.price = product_data['price']
+    product.processor = product_data['processor']
+    product.disk = product_data['disk']
+    product.onStock = product_data['on_stock']
     product.save()
     return product
 
