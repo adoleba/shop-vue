@@ -16,7 +16,8 @@ def create_product(product):
         price=product['price'],
         processor=product['processor'],
         disk=product['disk'],
-        on_stock=product['on_stock']
+        on_stock=product['on_stock'],
+        img_url=product['img_url']
     )
     db_product.save()
     return db_product
@@ -34,6 +35,7 @@ def update_product(product_id: int, product_data):
     product.processor = product_data['processor']
     product.disk = product_data['disk']
     product.onStock = product_data['on_stock']
+    product.img_url = product_data['img_url']
     product.save()
     return product
 

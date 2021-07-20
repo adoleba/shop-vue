@@ -16,6 +16,7 @@ class Product(BaseModel):
     processor: str
     disk: str
     onStock: bool
+    img_url: str
 
     class Config:
         orm_mode = True

@@ -1,6 +1,7 @@
+import shutil
 from typing import List
 
-from fastapi import FastAPI, Depends, HTTPException, Form
+from fastapi import FastAPI, Depends, HTTPException, Form, UploadFile, File
 
 from . import crud, database, models, schemas
 from .database import db_state_default
@@ -41,9 +42,17 @@ def create_product(producer: str = Form(..., min_length=2),
                    price: int = Form(..., gt=0),
                    processor: str = Form(..., min_length=2),
                    disk: str = Form(..., min_length=2),
-                   on_stock: bool = Form('true')):
+                   on_stock: bool = Form('true'),
+                   img_url: UploadFile = File(...)):
+
+    with open('media/'+img_url.filename, 'wb') as image:
+        shutil.copyfileobj(img_url.file, image)
+
+    img_url = str('media/'+img_url.filename)
+
     product = {'producer': producer, 'name': name, 'description': description, 'category': category, 'memory': memory,
-               'screen': screen, 'price': price, 'processor': processor, 'disk': disk, 'on_stock': on_stock}
+               'screen': screen, 'price': price, 'processor': processor, 'disk': disk, 'on_stock': on_stock,
+               'img_url': img_url}
     return crud.create_product(product=product)
 
 
@@ -74,9 +83,17 @@ def update_product(product_id: int, producer: str = Form(..., min_length=2),
                    price: int = Form(..., gt=0),
                    processor: str = Form(..., min_length=2),
                    disk: str = Form(..., min_length=2),
-                   on_stock: bool = Form('true')):
+                   on_stock: bool = Form('true'),
+                   img_url: UploadFile = File(...)):
+
+    with open('media/'+img_url.filename, 'wb') as image:
+        shutil.copyfileobj(img_url.file, image)
+
+    img_url = str('media/'+img_url.filename)
+
     product_data = {'producer': producer, 'name': name, 'description': description, 'category': category, 'memory': memory,
-                    'screen': screen, 'price': price, 'processor': processor, 'disk': disk, 'on_stock': on_stock}
+                    'screen': screen, 'price': price, 'processor': processor, 'disk': disk, 'on_stock': on_stock,
+                    'img_url': img_url}
     updated_product = crud.update_product(product_id, product_data=product_data)
     return updated_product
 

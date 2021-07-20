@@ -20,6 +20,7 @@ class Product(peewee.Model):
     processor = peewee.CharField()
     disk = peewee.CharField()
     onStock = peewee.BooleanField(default=True)
+    img_url = peewee.CharField()
 
     class Meta:
         database = db
