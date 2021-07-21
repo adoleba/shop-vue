@@ -1,4 +1,5 @@
 import shutil
+from enum import Enum
 from typing import List
 
 from fastapi import FastAPI, Depends, HTTPException, Form, UploadFile, File
@@ -11,6 +12,12 @@ database.db.create_tables([models.Product])
 database.db.close()
 
 app = FastAPI(title="VueShop Api")
+
+
+class ProductCategories(str, Enum):
+    _2in1 = '2in1'
+    laptop = 'laptop'
+    ultrabook = 'ultrabook'
 
 
 async def reset_db_state():
@@ -33,10 +40,10 @@ def get_db(db_state=Depends(reset_db_state)):
     tags=["products"],
     summary="Add a new product"
 )
-def create_product(producer: str = Form(..., min_length=2),
+def create_product(category: ProductCategories = ProductCategories.laptop,
+                   producer: str = Form(..., min_length=2),
                    name: str = Form(..., min_length=2),
                    description: str = Form(..., min_length=20),
-                   category: str = Form(..., min_length=3),
                    memory: str = Form(..., min_length=2),
                    screen: str = Form(..., min_length=2),
                    price: int = Form(..., gt=0),
@@ -50,7 +57,7 @@ def create_product(producer: str = Form(..., min_length=2),
 
     img_url = str('media/'+img_url.filename)
 
-    product = {'producer': producer, 'name': name, 'description': description, 'category': category, 'memory': memory,
+    product = {'producer': producer, 'name': name, 'description': description, 'category': category.value, 'memory': memory,
                'screen': screen, 'price': price, 'processor': processor, 'disk': disk, 'on_stock': on_stock,
                'img_url': img_url}
     return crud.create_product(product=product)
@@ -74,10 +81,11 @@ def read_products():
     tags=["products"],
     summary="Update existing product"
 )
-def update_product(product_id: int, producer: str = Form(..., min_length=2),
+def update_product(product_id: int,
+                   category: ProductCategories = ProductCategories.laptop,
+                   producer: str = Form(..., min_length=2),
                    name: str = Form(..., min_length=2),
                    description: str = Form(..., min_length=20),
-                   category: str = Form(..., min_length=3),
                    memory: str = Form(..., min_length=2),
                    screen: str = Form(..., min_length=2),
                    price: int = Form(..., gt=0),
@@ -91,7 +99,7 @@ def update_product(product_id: int, producer: str = Form(..., min_length=2),
 
     img_url = str('media/'+img_url.filename)
 
-    product_data = {'producer': producer, 'name': name, 'description': description, 'category': category, 'memory': memory,
+    product_data = {'producer': producer, 'name': name, 'description': description, 'category': category.value, 'memory': memory,
                     'screen': screen, 'price': price, 'processor': processor, 'disk': disk, 'on_stock': on_stock,
                     'img_url': img_url}
     updated_product = crud.update_product(product_id, product_data=product_data)
