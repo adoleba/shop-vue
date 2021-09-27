@@ -3,7 +3,7 @@
     <div v-for="product in products" :product="product" :key="product.id"
          class="col-sm-4 col-xs-12 text-center p-4 p-sm-2 p-lg-5">
       <div class="card no-border">
-        <img :src="getImgUrl(product.id)" v-bind:alt="product.name" class="card-img-top">
+        <!--<img :src="getImgUrl(product.id)" v-bind:alt="product.name" class="card-img-top"> -->
         <div class="card-body">
           <router-link class="card-text" :to="{ name: 'productDetail' , params:
             {product: slugify(product.producer+'-'+product.name), id: product.id}}">
@@ -19,27 +19,36 @@
 </template>
 
 <script>
-import products from "../data/products";
+
 import {Store} from "../store/store";
 import {useToast} from "vue-toastification";
+import axios from "axios";
 
 export default {
   name: 'HomePage',
   setup() {
     const toast = useToast();
-    return {toast};
+    const slugify = require('slugify');
+    return {toast, slugify};
   },
-  data() {
-  const slugify = require('slugify');
+  data (){
     return {
-      products,
-      slugify,
-    };
+      products: [],
+    }
   },
+
+  mounted () {
+    console.log('dupa')
+      axios.get('http://localhost:8000/api/products/').then(response => {
+        this.products = response.data
+      })
+  },
+
+
   methods: {
-    getImgUrl(id) {
-      return require('../data/images/' + id + '.png');
-    },
+    //getImgUrl(id) {
+      //return require('../data/images/' + id + '.png');
+    //},
     addToCart(product) {
       Store.addToCart(product);
       this.toast.success("Product was added to cart", {

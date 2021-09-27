@@ -3,6 +3,7 @@ from enum import Enum
 from typing import List
 
 from fastapi import FastAPI, Depends, HTTPException, Form, UploadFile, File
+from starlette.middleware.cors import CORSMiddleware
 
 from . import crud, database, models, schemas
 from .database import db_state_default
@@ -12,6 +13,14 @@ database.db.create_tables([models.Product])
 database.db.close()
 
 app = FastAPI(title="VueShop Api")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class ProductCategories(str, Enum):
@@ -35,7 +44,7 @@ def get_db(db_state=Depends(reset_db_state)):
 
 
 @app.post(
-    "/products/",
+    "/api/products/",
     dependencies=[Depends(get_db)],
     tags=["products"],
     summary="Add a new product"
@@ -64,7 +73,7 @@ def create_product(category: ProductCategories = ProductCategories.laptop,
 
 
 @app.get(
-    "/products/",
+    "/api/products/",
     response_model=List[schemas.Product],
     dependencies=[Depends(get_db)],
     tags=["products"],
@@ -76,7 +85,7 @@ def read_products():
 
 
 @app.put(
-    "/products/{product_id}",
+    "/api/products/{product_id}",
     dependencies=[Depends(get_db)],
     tags=["products"],
     summary="Update existing product"
@@ -107,7 +116,7 @@ def update_product(product_id: int,
 
 
 @app.delete(
-    "/products/{product_id}",
+    "/api/products/{product_id}",
     tags=["products"],
     summary="Delete product"
 )
@@ -119,7 +128,7 @@ def delete_product(product_id: int):
 
 
 @app.get(
-    "/products/{product_id}",
+    "/api/products/{product_id}",
     response_model=schemas.Product,
     dependencies=[Depends(get_db)],
     tags=["products"],
@@ -130,3 +139,4 @@ def read_product(product_id: int):
     if db_product is None:
         raise HTTPException(status_code=404, detail="Product not found")
     return db_product
+
