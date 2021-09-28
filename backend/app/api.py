@@ -61,7 +61,7 @@ def create_product(category: ProductCategories = ProductCategories.laptop,
                    on_stock: bool = Form('true'),
                    img_url: UploadFile = File(...)):
 
-    with open('media/'+img_url.filename, 'wb') as image:
+    with open('../public/media/'+img_url.filename, 'wb') as image:
         shutil.copyfileobj(img_url.file, image)
 
     img_url = str('media/'+img_url.filename)
@@ -103,7 +103,7 @@ def update_product(product_id: int,
                    on_stock: bool = Form('true'),
                    img_url: UploadFile = File(...)):
 
-    with open('media/'+img_url.filename, 'wb') as image:
+    with open('../public/media/'+img_url.filename, 'wb') as image:
         shutil.copyfileobj(img_url.file, image)
 
     img_url = str('media/'+img_url.filename)

@@ -3,7 +3,7 @@
     <div v-for="product in products" :product="product" :key="product.id"
          class="col-sm-4 col-xs-12 text-center p-4 p-sm-2 p-lg-5">
       <div class="card no-border">
-        <!--<img :src="getImgUrl(product.id)" v-bind:alt="product.name" class="card-img-top"> -->
+        <img :src="getImgUrl(product.img_url)" v-bind:alt="product.name" class="card-img-top">
         <div class="card-body">
           <router-link class="card-text" :to="{ name: 'productDetail' , params:
             {product: slugify(product.producer+'-'+product.name), id: product.id}}">
@@ -38,17 +38,16 @@ export default {
   },
 
   mounted () {
-    console.log('dupa')
       axios.get('http://localhost:8000/api/products/').then(response => {
         this.products = response.data
-      })
+      });
   },
 
 
   methods: {
-    //getImgUrl(id) {
-      //return require('../data/images/' + id + '.png');
-    //},
+    getImgUrl(product) {
+      return require('../../public/' + product);
+    },
     addToCart(product) {
       Store.addToCart(product);
       this.toast.success("Product was added to cart", {
