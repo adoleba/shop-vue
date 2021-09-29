@@ -1,11 +1,8 @@
-from typing import Any
-
-import peewee
 from pydantic import BaseModel
-from pydantic.utils import GetterDict
 
 
 class Product(BaseModel):
+    product_id: int
     producer: str
     name: str
     description: str

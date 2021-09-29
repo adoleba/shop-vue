@@ -10,6 +10,7 @@ CATEGORIES = (
 
 
 class Product(peewee.Model):
+    product_id = peewee.IntegerField(primary_key=True)
     producer = peewee.CharField()
     name = peewee.CharField()
     description = peewee.TextField()

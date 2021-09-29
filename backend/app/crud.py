@@ -1,4 +1,4 @@
-from backend.app import models, schemas
+from backend.app import models
 
 
 def get_products(skip: int = 0, limit: int = 100):
@@ -24,7 +24,7 @@ def create_product(product):
 
 
 def update_product(product_id: int, product_data):
-    product = models.Product.filter(models.Product.id == product_id).first()
+    product = models.Product.filter(models.Product.product_id == product_id).first()
     product.producer = product_data['producer']
     product.name = product_data['name']
     product.description = product_data['description']
@@ -41,8 +41,8 @@ def update_product(product_id: int, product_data):
 
 
 def delete_product(product_id: int):
-    return models.Product.delete().where(models.Product.id == product_id).execute()
+    return models.Product.delete().where(models.Product.product_id == product_id).execute()
 
 
 def get_product(product_id: int):
-    return models.Product.filter(models.Product.id == product_id).first()
+    return models.Product.filter(models.Product.product_id == product_id).first()
