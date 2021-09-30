@@ -3,7 +3,7 @@
     <div class="row text-center text-md-left">
 
       <div class="col-12 col-md-6 justify-content-center">
-        <img :src="getImgUrl(product.id)" v-bind:alt="product.name" class="card-img-top">
+        <img :src="getImgUrl(product.img_url)" v-bind:alt="product.name" class="card-img-top">
       </div>
 
       <div class="col-12 col-md-6 justify-content-center py-5 pl-5">
@@ -49,24 +49,25 @@
 
 <script>
 
-import products from "../data/products";
 import {Store} from "../store/store";
 import {useToast} from "vue-toastification";
 
 export default {
   name: "ProductDetail",
   setup() {
+    const slugify = require('slugify');
     const toast = useToast();
-    return {toast};
+    return {toast, slugify};
   },
   data() {
     return {
-      products: products,
+      products: Store.state.products,
+      product: [],
     };
   },
   methods: {
-    getImgUrl(id) {
-      return require('../data/images/' + id + '.png');
+    getImgUrl(product) {
+      return require('../../public/' + product);
     },
     getQuantity() {
       return document.querySelector("input[id=quantity]").value;
@@ -78,10 +79,16 @@ export default {
       });
     },
   },
-  created() {
-    const ID = Number(this.$route.params.id);
-    this.product = this.products.find(product => product.id === ID);
+
+  async created() {
+    const product_data = this.$route.params.product;
+    console.log(this.$route.params)
+    if (Store.state.products.length === 0) {
+      this.products = await Store.getProductsFromApi()
+    }
+    this.product = this.products.find(product => this.slugify(product.producer+'-'+product.name) === product_data);
   },
+
 };
 </script>
 

@@ -15,8 +15,9 @@ export const Store = {
     }),
     addToCart(product, addedQuantity=1) {
         const locationInCart = this.state.cart.findIndex(p => {
-            return p.details.id === product.id
+            return p.details.product_id === product.product_id
         })
+
         if (locationInCart === -1) {
             this.state.cart.push({
                 details: product,
@@ -28,7 +29,7 @@ export const Store = {
     },
     removeFromCart(id) {
         const locationInCart = this.state.cart.findIndex(p => {
-            return p.details.id === id
+            return p.details.product_id === id
         })
         this.state.cart.splice(locationInCart, 1)
     },
@@ -50,13 +51,13 @@ export const Store = {
     },
     increaseQuantity(id) {
         const locationInCart = this.state.cart.findIndex(p => {
-            return p.details.id === id
+            return p.details.product_id === id
         })
         this.state.cart[locationInCart].quantity++
     },
     decreaseQuantity(id) {
         const locationInCart = this.state.cart.findIndex(p => {
-            return p.details.id === id
+            return p.details.product_id === id
         })
         if (this.state.cart[locationInCart].quantity===1) {
             this.state.cart.splice(locationInCart, 1)

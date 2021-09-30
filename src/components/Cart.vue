@@ -16,12 +16,12 @@
         <div class="d-md-none">
           <div class="row">
             <div class="col-6 align-self-center">
-              <img :src="getImgUrl(product.details.id)" v-bind:alt="product.name"/>
+              <img :src="getImgUrl(product.details.img_url)" v-bind:alt="product.name"/>
             </div>
             <div class="col-6 align-self-center">
               <span class="font-weight-bold">Product: </span><br/>
               <router-link class="card-text" :to="{ name: 'productDetail' ,
-                 params: {product: slugify(product.details.producer+'-'+product.details.name), id: product.details.id}}">
+                 params: {product: slugify(product.details.producer+'-'+product.details.name), id: product.details.product_id}}">
                 {{ product.details.producer }} {{ product.details.name }}
               </router-link>
               <div class="align-self-center">
@@ -30,12 +30,12 @@
               <div class="align-self-center py-2"><span class="font-weight-bold">Quantity: </span></div>
               <div class="row">
                 <div class="col-8 col-sm-4 py-2">
-                  <i class="bi-dash" v-on:click="decreaseQuantity(product.details.id)" style="cursor: pointer"></i>
+                  <i class="bi-dash" v-on:click="decreaseQuantity(product.details.product_id)" style="cursor: pointer"></i>
                   <span class="border p-2 rounded">{{ product.quantity }}</span>
-                  <i class="bi-plus" v-on:click="increaseQuantity(product.details.id)" style="cursor: pointer"></i>
+                  <i class="bi-plus" v-on:click="increaseQuantity(product.details.product_id)" style="cursor: pointer"></i>
                 </div>
                 <div class="col-4 text-lg-left align-self-center py-2">
-                  <i class="bi-trash" v-on:click="removeFromCart(product.details.id)" style="cursor: pointer"
+                  <i class="bi-trash" v-on:click="removeFromCart(product.details.product_id)" style="cursor: pointer"
                      title="Remove from cart"></i>
                 </div>
               </div>
@@ -47,11 +47,11 @@
         </div>
 
         <div class="col-2 align-self-center d-none d-md-block">
-          <img :src="getImgUrl(product.details.id)" v-bind:alt="product.name"/>
+          <img :src="getImgUrl(product.details.img_url)" v-bind:alt="product.name"/>
         </div>
         <div class="col-3 align-self-center d-none d-md-block">
           <router-link class="card-text" :to="{ name: 'productDetail' ,
-            params: {product: slugify(product.details.producer+'-'+product.details.name),id: product.details.id}}">
+            params: {product: slugify(product.details.producer+'-'+product.details.name),id: product.details.product_id}}">
             {{ product.details.producer }} {{ product.details.name }}
           </router-link>
         </div>
@@ -60,16 +60,16 @@
         </div>
 
         <div class="col-2 align-self-center d-none d-md-block">
-          <i class="bi-dash" v-on:click="decreaseQuantity(product.details.id)" style="cursor: pointer"></i>
+          <i class="bi-dash" v-on:click="decreaseQuantity(product.details.product_id)" style="cursor: pointer"></i>
           <span class="border p-2 rounded">{{ product.quantity }}</span>
-          <i class="bi-plus" v-on:click="increaseQuantity(product.details.id)" style="cursor: pointer"></i>
+          <i class="bi-plus" v-on:click="increaseQuantity(product.details.product_id)" style="cursor: pointer"></i>
         </div>
 
         <div class="col-2 align-self-center d-none d-md-block">
           {{ (product.details.price * product.quantity).toLocaleString().replace(',', ' ') }} zł
         </div>
         <div class="col-1 text-lg-left align-self-center d-none d-md-block">
-          <i class="bi-trash" v-on:click="removeFromCart(product.details.id)" style="cursor: pointer"
+          <i class="bi-trash" v-on:click="removeFromCart(product.details.product_id)" style="cursor: pointer"
              title="Remove from cart"></i>
         </div>
       </div>
@@ -128,8 +128,8 @@ export default {
     };
   },
   methods: {
-    getImgUrl(id) {
-      return require('../data/images/' + id + '.png');
+    getImgUrl(product) {
+      return require('../../public/' + product);
     },
     removeFromCart(id) {
       Store.removeFromCart(id);
