@@ -1,4 +1,5 @@
 import { reactive } from 'vue'
+import axios from "axios";
 
 export const Store = {
     state: reactive({
@@ -10,6 +11,7 @@ export const Store = {
         invoice: false,
         termsAccepted: false,
         marketingAccepted: false,
+        products: [],
     }),
     addToCart(product, addedQuantity=1) {
         const locationInCart = this.state.cart.findIndex(p => {
@@ -72,4 +74,10 @@ export const Store = {
         return accum + product.quantity;
       }, 0);
     },
+    async getProductsFromApi() {
+        const response = await axios.get('http://localhost:8000/api/products/');
+        Store.state.products = response.data;
+        return response.data;
+        },
+
 }

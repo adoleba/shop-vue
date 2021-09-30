@@ -32,7 +32,6 @@
 <script>
 import {useToast} from "vue-toastification";
 import {Store} from "../store/store";
-import axios from "axios";
 
 export default {
   name: "CategoryProducts",
@@ -48,13 +47,6 @@ export default {
     };
   },
 
-  mounted () {
-    const categoryName = this.$route.params.categoryName;
-    axios.get('http://localhost:8000/api/products/').then(response => {
-      this.products = response.data.filter(product => product.category === categoryName);
-    });
-  },
-
   methods: {
     getImgUrl(product) {
       return require('../../public/' + product);
@@ -66,6 +58,14 @@ export default {
       });
     },
   },
+
+  async created() {
+    if (Store.state.products.length === 0) {
+      this.products = await Store.getProductsFromApi()
+    }
+    this.products = Store.state.products.filter(product => product.category === this.categoryName)
+  },
+
 };
 </script>
 

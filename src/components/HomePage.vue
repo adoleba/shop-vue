@@ -22,7 +22,6 @@
 
 import {Store} from "../store/store";
 import {useToast} from "vue-toastification";
-import axios from "axios";
 
 export default {
   name: 'HomePage',
@@ -34,15 +33,8 @@ export default {
   data (){
     return {
       products: [],
-    }
+    };
   },
-
-  mounted () {
-      axios.get('http://localhost:8000/api/products/').then(response => {
-        this.products = response.data
-      });
-  },
-
 
   methods: {
     getImgUrl(product) {
@@ -55,6 +47,9 @@ export default {
       });
     },
   },
+  async created() {
+    this.products = await Store.getProductsFromApi();
+  }
 
 };
 
