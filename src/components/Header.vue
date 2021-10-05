@@ -30,7 +30,7 @@ export default {
     this.timer = setInterval(() => {
       const newQuantity = Store.totalCartQuantity();
       if (newQuantity !== currentQuantity) {
-        this.curVal = newQuantity;
+        this.currentQuantity = newQuantity;
         this.totalCartQuantity = newQuantity;
         this.lastChange = new Date()
       }

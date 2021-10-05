@@ -1,6 +1,6 @@
 <template>
   <div class="container py-1 py-md-5">
-    <div v-if="cart.cart.length>=1 ">
+    <div v-if="cart.length>=1 ">
       <h3>Your cart</h3>
 
       <div class="row py-2 py-md-5">
@@ -11,7 +11,7 @@
         <div class="col-2 d-none d-md-block font-weight-bold">Value</div>
       </div>
 
-      <div class="row pb-5" v-for="product in cart.cart" :key="product.details.id" :product="product">
+      <div class="row pb-5" v-for="product in cart" :key="product.details.id" :product="product">
 
         <div class="d-md-none">
           <div class="row">
@@ -123,7 +123,7 @@ export default {
   data() {
     const slugify = require('slugify');
     return {
-      cart: Store.state,
+      cart: Store.state.cart,
       slugify,
     };
   },

@@ -14,6 +14,11 @@ export const Store = {
         products: [],
     }),
     addToCart(product, addedQuantity=1) {
+        if (JSON.parse(localStorage.getItem('cart')) === null) {
+            this.state.cart = []
+        } else {
+            this.state.cart = JSON.parse(localStorage.getItem('cart'))
+        }
         const locationInCart = this.state.cart.findIndex(p => {
             return p.details.product_id === product.product_id
         })

@@ -82,7 +82,6 @@ export default {
 
   async created() {
     const product_data = this.$route.params.product;
-    console.log(this.$route.params)
     if (Store.state.products.length === 0) {
       this.products = await Store.getProductsFromApi()
     }
