@@ -26,6 +26,8 @@ export const Store = {
         } else {
             this.state.cart[locationInCart].quantity += +addedQuantity
         }
+        localStorage.setItem('cart', JSON.stringify(Store.state.cart))
+
     },
     removeFromCart(id) {
         const locationInCart = this.state.cart.findIndex(p => {
@@ -71,9 +73,14 @@ export const Store = {
         }, 0)
     },
     totalCartQuantity() {
-      return Store.state.cart.reduce((accum, product) => {
-        return accum + product.quantity;
-      }, 0);
+        if (localStorage.getItem('cart') === null) {
+            return 0
+        } else {
+            const localStorageAsObject = JSON.parse(localStorage.getItem('cart'));
+            return localStorageAsObject.reduce((accum, product) => {
+                return accum + product.quantity;
+                }, 0);
+        }
     },
     async getProductsFromApi() {
         const response = await axios.get('http://localhost:8000/api/products/');

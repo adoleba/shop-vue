@@ -17,11 +17,29 @@ import {Store} from "../store/store";
 
 export default {
   name: "Header",
-  computed: {
-    totalCartQuantity() {
-      return Store.totalCartQuantity()
-    },
+  data () {
+    return {
+      totalCartQuantity: Store.totalCartQuantity(),
+      lastChange: null,
+      timer: null
+    }
   },
+  created() {
+    const currentQuantity = this.totalCartQuantity;
+    this.lastChange = new Date()
+    this.timer = setInterval(() => {
+      const newQuantity = Store.totalCartQuantity();
+      if (newQuantity !== currentQuantity) {
+        this.curVal = newQuantity;
+        this.totalCartQuantity = newQuantity;
+        this.lastChange = new Date()
+      }
+    }, 1000);
+    },
+  beforeUnmount() {
+    clearInterval(this.timer)
+  }
+
 };
 </script>
 
